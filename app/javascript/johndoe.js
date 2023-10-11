@@ -3,11 +3,6 @@
 * JohnDoe Landing page
 =========================================================
 
-* Copyright: 2019 DevCRUD (https://devcrud.com)
-* Licensed: (https://devcrud.com/licenses)
-* Coded by www.devcrud.com
-
-=========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
@@ -31,7 +26,6 @@ $(document).ready(function(){
     });
 });
 
-// protfolio filters
 $(window).on("load", function() {
     var t = $(".portfolio-container");
     t.isotope({
