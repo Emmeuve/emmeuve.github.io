@@ -344,6 +344,45 @@ body {
     color: var(--accent-color);
 }
 
+.contact-text {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+/* Timeline Description */
+.timeline-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+/* Skills List */
+.skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.skill-category {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skill-category-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.skill-items {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {

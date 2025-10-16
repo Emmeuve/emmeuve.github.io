@@ -1,10 +1,14 @@
-# Portfolio Personal
+# Portfolio Michel Valenzuela
 
-Portafolio web minimalista y profesional construido con HTML, CSS y JavaScript vanilla.
+Portafolio web minimalista y profesional de Michel Valenzuela, Diseñador Gráfico especializado en branding, diseño editorial y experiencia visual.
 
 🔗 **[Ver sitio en vivo](https://emmeuve.github.io)**
 
-## ✨ Características
+## 👨‍🎨 Sobre Mí
+
+Diseñador gráfico con formación profesional y experiencia en proyectos visuales creativos, diseño de marcas, identidad corporativa y comunicación efectiva. Apasionado por desarrollar soluciones visuales que conecten con las personas y transmitan mensajes claros y memorables.
+
+## ✨ Características del Portafolio
 
 - 🎨 Diseño minimalista y limpio
 - 🌓 Modo oscuro/claro con persistencia
@@ -23,13 +27,33 @@ Portafolio web minimalista y profesional construido con HTML, CSS y JavaScript v
 
 ## 📋 Secciones
 
-- **About** - Información personal y descripción
-- **Work Experience** - Historial laboral con galería de proyectos
-- **Writing** - Artículos y publicaciones
-- **Speaking** - Conferencias y charlas
-- **Side Projects** - Proyectos personales
-- **Education** - Formación académica
-- **Contact** - Redes sociales y contacto
+- **Sobre Mí** - Perfil profesional y descripción
+- **Experiencia Profesional** - Historial laboral
+- **Proyectos Destacados** - Portfolio de trabajos realizados
+- **Habilidades** - Herramientas, especialidades y metodologías
+- **Formación** - Educación y certificaciones
+- **Contacto** - Redes sociales y formas de contacto
+
+## 🎯 Especialidades
+
+### Herramientas
+- Adobe Illustrator
+- Adobe Photoshop
+- Adobe InDesign
+- Figma
+- Canva
+
+### Áreas de Expertise
+- Branding e Identidad Visual
+- Diseño Editorial
+- Tipografía
+- Composición Visual
+- Diseño UX/UI
+- Dirección de Arte
+
+### Metodologías
+- Design Thinking
+- Design Sprint
 
 ## 🚀 Instalación Local
 
@@ -77,12 +101,11 @@ Edita las variables CSS en `styles.css`:
 
 ### Actualizar Contenido
 
-Edita `index.html` y reemplaza:
-- `[Tu Nombre]` con tu nombre
-- URLs de imágenes placeholder
-- Información de experiencia laboral
-- Links de redes sociales
-- Proyectos y artículos
+Edita `index.html` para:
+- Actualizar proyectos
+- Agregar nueva experiencia
+- Modificar información de contacto
+- Añadir nuevas secciones
 
 ## 🌐 Deploy
 
@@ -106,28 +129,37 @@ El portafolio está optimizado para:
 ## ⚡ Performance
 
 - Sin dependencias externas
-- CSS y JS minificados en producción
-- Imágenes optimizadas
-- Lazy loading de imágenes
-- Fuentes del sistema
+- CSS y JS optimizados
+- Fuentes del sistema para carga rápida
+- Animaciones eficientes
+- Código limpio y mantenible
 
-## 🤝 Contribuciones
+## 🔗 Enlaces
 
-Si encuentras algún bug o tienes sugerencias, siéntete libre de abrir un issue o pull request.
+- **Portafolio:** [emmeuve.github.io](https://emmeuve.github.io)
+- **Behance:** [@Emmeuve](https://www.behance.net/Emmeuve)
+- **LinkedIn:** [Michel Valenzuela](https://www.linkedin.com/in/michelvalenzuelacastillo/)
+- **GitHub:** [@emmeuve](https://github.com/emmeuve)
+
+## 📫 Contacto
+
+- **Email:** michelvalecastillo@gmail.com
+- **Teléfono:** +56 9 4794 7310
+- **Ubicación:** Puente Alto, Santiago, Chile
+- **Disponibilidad:** Proyectos remotos y presenciales
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Siéntete libre de usarlo como base para tu propio portafolio.
+Este proyecto está bajo la Licencia MIT. Siéntete libre de usarlo como referencia.
 
 ## 👤 Autor
 
-**Tu Nombre**
-- Website: [tuwebsite.com](https://tuwebsite.com)
-- GitHub: [@emmeuve](https://github.com/emmeuve)
-- LinkedIn: [Tu perfil](https://linkedin.com/in/tu-perfil)
+**Michel Valenzuela Castillo**
+
+Diseñador Gráfico especializado en branding, diseño editorial y experiencia visual. Apasionado por crear soluciones visuales que conecten con las personas y comuniquen de forma efectiva.
 
 ---
 
-⭐ Si te gustó este proyecto, dale una estrella en GitHub!
+⭐ Si te gustó este portafolio, dale una estrella en GitHub!
 
-Hecho con ❤️ y ☕
+Hecho con ❤️ en Santiago, Chile 🇨🇱
