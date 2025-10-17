@@ -32,15 +32,17 @@ navLinks.forEach(link => {
     });
 });
 
-// Active nav link on scroll
+// Active nav link on scroll (account for fixed navbar height)
 const sections = document.querySelectorAll('section[id]');
+const navbar = document.querySelector('.navbar');
 
 function highlightNavOnScroll() {
     const scrollY = window.pageYOffset;
+    const navbarHeight = navbar ? navbar.offsetHeight : 0;
 
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
+        const sectionTop = section.offsetTop - navbarHeight - 10; // small margin
         const sectionId = section.getAttribute('id');
         const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
 
@@ -55,16 +57,25 @@ function highlightNavOnScroll() {
 
 window.addEventListener('scroll', highlightNavOnScroll);
 
-// Smooth scroll for anchor links
+// Smooth scroll for anchor links with navbar offset
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            e.preventDefault();
+            const navbarHeight = navbar ? navbar.offsetHeight : 0;
+            const y = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 12; // extra spacing
+            window.scrollTo({ top: y, behavior: 'smooth' });
+
+            // Close mobile menu if open
+            if (hamburger) {
+                hamburger.classList.remove('active');
+            }
+            if (navMenu) {
+                navMenu.classList.remove('active');
+            }
         }
     });
 });

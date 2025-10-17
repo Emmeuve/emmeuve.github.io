@@ -8,6 +8,7 @@
     --border-color: #e5e7eb;
     --accent-color: #2563eb;
     --transition: all 0.3s ease;
+    --logo-size: 44px;
 }
 
 [data-theme="dark"] {
@@ -125,7 +126,6 @@ body {
     background-color: var(--accent-color);
     transition: width 0.3s ease;
 }
-
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
@@ -477,6 +477,95 @@ body {
     display: flex;
     flex-direction: column;
     gap: 32px;
+}
+
+/* Logo ribbon (marquee) */
+.logo-ribbon {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 16px;
+    border-radius: 8px;
+    background-color: var(--bg-primary); /* match page background */
+}
+
+.logo-track {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding: 12px 16px;
+    will-change: transform;
+    animation: marquee 18s linear infinite;
+    /* Mask so items fade at both ends of the track (10% each) */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.logo-item {
+    min-width: 84px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+.logo-item img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
+    /* Ensure SVG icons use the desired logo color when possible */
+    filter: var(--logo-filter, none);
+}
+
+/* Make logo items use the logo color */
+.logo-item { color: var(--logo-color); }
+
+/* Logo color variable */
+:root {
+    --logo-color: #4b5563; /* darker typography color */
+}
+
+/* If SVGs are inline or have currentColor, we can set color; as a fallback we keep the rect fill in the SVGs */
+.logo-item img { color: var(--logo-color); }
+
+.logo-item:hover {
+    color: var(--text-primary);
+}
+
+.logo-ribbon:hover .logo-track {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Edge fade masks */
+.logo-ribbon::before,
+.logo-ribbon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+    pointer-events: none;
+}
+
+.logo-ribbon::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-primary) 0%, rgba(255,255,255,0) 60%);
+}
+
+.logo-ribbon::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-primary) 0%, rgba(255,255,255,0) 60%);
 }
 
 .skill-category {
