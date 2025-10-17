@@ -131,3 +131,73 @@ document.addEventListener('click', (e) => {
         window.location.href = href;
     }, FADE_MS);
 });
+
+/* Lightbox functionality */
+(function() {
+    const lightbox = document.querySelector('.lightbox');
+    if (!lightbox) return;
+    const imgEl = lightbox.querySelector('.lightbox-img');
+    const btnClose = lightbox.querySelector('.lightbox-close');
+    const btnPrev = lightbox.querySelector('.lightbox-prev');
+    const btnNext = lightbox.querySelector('.lightbox-next');
+
+    // Collect images from galleries
+    let items = [];
+    function collect() {
+        items = Array.from(document.querySelectorAll('.project-gallery img, .bento-image img'))
+            .map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt') }));
+    }
+    collect();
+
+    let index = 0;
+    function openAt(i) {
+        index = (i + items.length) % items.length;
+        imgEl.src = items[index].src;
+        imgEl.alt = items[index].alt || '';
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        imgEl.focus && imgEl.focus();
+    }
+
+    function close() {
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    btnClose.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) close();
+    });
+
+    btnPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openAt(index - 1);
+    });
+    btnNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openAt(index + 1);
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') close();
+            if (e.key === 'ArrowLeft') openAt(index - 1);
+            if (e.key === 'ArrowRight') openAt(index + 1);
+        }
+    });
+
+    // Click on gallery images
+    document.addEventListener('click', (e) => {
+        const img = e.target.closest && e.target.closest('img');
+        if (!img) return;
+        if (img.closest('.project-gallery') || img.closest('.bento-image')) {
+            // find index of clicked image in items
+            collect();
+            const src = img.getAttribute('src');
+            const idx = items.findIndex(it => it.src === src);
+            if (idx >= 0) openAt(idx);
+        }
+    });
+})();
