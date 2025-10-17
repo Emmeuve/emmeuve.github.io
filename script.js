@@ -6,29 +6,32 @@ const html = document.documentElement;
 const currentTheme = localStorage.getItem('theme') || 'light';
 html.setAttribute('data-theme', currentTheme);
 
-themeToggle.addEventListener('click', () => {
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-});
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+}
 
 // Hamburger Menu
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+}
 
-// Close menu when clicking on a link
+// Close menu when clicking on a link (safe if hamburger/navMenu missing)
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+        if (hamburger) hamburger.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
     });
 });
 
@@ -112,10 +115,27 @@ document.querySelectorAll('a[href^="http"]').forEach(link => {
 // Page transition: fade out before navigating for project links, fade in on load
 const FADE_MS = 360;
 
-window.addEventListener('load', () => {
-    // ensure body is visible after load
-    document.body.classList.remove('page-hidden');
-});
+try {
+    window.addEventListener('load', () => {
+        // ensure body is visible after load
+        try { document.body.classList.remove('page-hidden'); } catch (err) {}
+    });
+} catch (err) {
+    // If attaching load fails for any reason, ensure page is not stuck hidden
+    try { document.body.classList.remove('page-hidden'); } catch (e) {}
+}
+
+// Fallback: if something prevents the load handler or other JS errors run,
+// remove the page-hidden class after a short timeout so the page is still usable.
+setTimeout(() => {
+    try {
+        if (document.body.classList.contains('page-hidden')) {
+            document.body.classList.remove('page-hidden');
+        }
+    } catch (err) {
+        // ignore
+    }
+}, 1000);
 
 document.addEventListener('click', (e) => {
     const a = e.target.closest && e.target.closest('a.project-link');
@@ -219,4 +239,101 @@ document.addEventListener('click', (e) => {
             if (idx >= 0) openAt(idx);
         }
     });
+
+    // ---- Accessibility: focus trap inside lightbox ----
+    let previouslyFocused = null;
+    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    function trapFocus(e) {
+        if (!lightbox.classList.contains('active')) return;
+        const focusable = Array.from(lightbox.querySelectorAll(focusableSelector)).filter(el => !el.hasAttribute('disabled'));
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.key === 'Tab') {
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else { // Tab
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+    }
+
+    // Enhance openAt and close to manage focus
+    const _openAt = openAt;
+    openAt = function(i) {
+        previouslyFocused = document.activeElement;
+        _openAt(i);
+        // set focus to close button for discoverability
+        setTimeout(() => {
+            const focusTarget = btnClose || lightbox.querySelector('button, [tabindex]');
+            focusTarget && focusTarget.focus();
+        }, 60);
+        document.addEventListener('keydown', trapFocus);
+    };
+
+    const _close = close;
+    close = function() {
+        _close();
+        document.removeEventListener('keydown', trapFocus);
+        // restore focus
+        try { previouslyFocused && previouslyFocused.focus(); } catch (err) {}
+        previouslyFocused = null;
+    };
+
+    // ---- Touch / pointer swipe support ----
+    let pointerDown = false;
+    let startX = 0;
+    let startY = 0;
+    let moved = false;
+    const SWIPE_THRESHOLD = 50; // px
+
+    function onPointerDown(e) {
+        pointerDown = true;
+        moved = false;
+        startX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+        startY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+    }
+
+    function onPointerMove(e) {
+        if (!pointerDown) return;
+        const x = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] && e.touches[0].clientX) || 0;
+        const y = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+        const dx = x - startX;
+        const dy = y - startY;
+        // if vertical scroll larger, ignore
+        if (Math.abs(dy) > Math.abs(dx)) return;
+        if (Math.abs(dx) > 10) moved = true;
+    }
+
+    function onPointerUp(e) {
+        if (!pointerDown) return;
+        pointerDown = false;
+        const x = e.clientX !== undefined ? e.clientX : (e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX) || 0;
+        const dx = x - startX;
+        if (!moved) return;
+        if (dx > SWIPE_THRESHOLD) {
+            // swipe right -> previous
+            openAt(index - 1);
+        } else if (dx < -SWIPE_THRESHOLD) {
+            // swipe left -> next
+            openAt(index + 1);
+        }
+    }
+
+    // pointer events where available
+    lightbox.addEventListener('pointerdown', onPointerDown, { passive: true });
+    lightbox.addEventListener('pointermove', onPointerMove, { passive: true });
+    lightbox.addEventListener('pointerup', onPointerUp);
+    // fallback for touch events
+    lightbox.addEventListener('touchstart', onPointerDown, { passive: true });
+    lightbox.addEventListener('touchmove', onPointerMove, { passive: true });
+    lightbox.addEventListener('touchend', onPointerUp);
 })();

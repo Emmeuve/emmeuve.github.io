@@ -281,6 +281,33 @@ body {
     pointer-events: none;
     font-size: 14px;
 }
+
+/* Preloader spinner */
+.lightbox-spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2100;
+}
+.lightbox-spinner.active {
+    display: flex;
+}
+.spinner-ring {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.12);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 .lightbox-caption {
     flex: 1;
     text-align: left;
