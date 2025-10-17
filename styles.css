@@ -8,7 +8,6 @@
     --border-color: #e5e7eb;
     --accent-color: #2563eb;
     --transition: all 0.3s ease;
-    --logo-size: 44px;
 }
 
 [data-theme="dark"] {
@@ -69,7 +68,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 32px;
+    gap: 16px;
 }
 
 .nav-logo {
@@ -79,6 +78,7 @@ body {
     text-decoration: none;
     letter-spacing: -0.02em;
     transition: var(--transition);
+    flex-shrink: 0;
 }
 
 .nav-logo:hover {
@@ -106,6 +106,7 @@ body {
     font-weight: 500;
     transition: var(--transition);
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -126,6 +127,7 @@ body {
     background-color: var(--accent-color);
     transition: width 0.3s ease;
 }
+
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
@@ -160,21 +162,18 @@ body {
 
 /* Theme Toggle */
 .theme-toggle {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 1px solid var(--border-color);
-    background-color: var(--bg-primary);
+    background-color: transparent;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-    z-index: 1000;
     color: var(--text-primary);
+    flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -210,7 +209,7 @@ body {
 
 /* Header */
 .header {
-    padding: 80px 0 40px;
+    padding: 120px 0 40px;
 }
 
 .profile-section {
@@ -479,95 +478,6 @@ body {
     gap: 32px;
 }
 
-/* Logo ribbon (marquee) */
-.logo-ribbon {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    margin-top: 16px;
-    border-radius: 8px;
-    background-color: var(--bg-primary); /* match page background */
-}
-
-.logo-track {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-    padding: 12px 16px;
-    will-change: transform;
-    animation: marquee 18s linear infinite;
-    /* Mask so items fade at both ends of the track (10% each) */
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);
-}
-
-.logo-item {
-    min-width: 84px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    color: var(--text-secondary);
-    font-weight: 600;
-    border-radius: 6px;
-    border: 1px solid transparent;
-}
-
-.logo-item img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    display: block;
-    /* Ensure SVG icons use the desired logo color when possible */
-    filter: var(--logo-filter, none);
-}
-
-/* Make logo items use the logo color */
-.logo-item { color: var(--logo-color); }
-
-/* Logo color variable */
-:root {
-    --logo-color: #4b5563; /* darker typography color */
-}
-
-/* If SVGs are inline or have currentColor, we can set color; as a fallback we keep the rect fill in the SVGs */
-.logo-item img { color: var(--logo-color); }
-
-.logo-item:hover {
-    color: var(--text-primary);
-}
-
-.logo-ribbon:hover .logo-track {
-    animation-play-state: paused;
-}
-
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* Edge fade masks */
-.logo-ribbon::before,
-.logo-ribbon::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 64px;
-    pointer-events: none;
-}
-
-.logo-ribbon::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg-primary) 0%, rgba(255,255,255,0) 60%);
-}
-
-.logo-ribbon::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg-primary) 0%, rgba(255,255,255,0) 60%);
-}
-
 .skill-category {
     display: flex;
     flex-direction: column;
@@ -587,14 +497,108 @@ body {
     line-height: 1.6;
 }
 
+/* Logo Ribbon / Marquee */
+.logo-ribbon {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 24px;
+    padding: 24px 0;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.logo-track {
+    display: flex;
+    gap: 48px;
+    animation: scroll 30s linear infinite;
+    width: fit-content;
+}
+
+.logo-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+}
+
+.logo-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.logo-item img:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause animation on hover */
+.logo-ribbon:hover .logo-track {
+    animation-play-state: paused;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 0 20px;
     }
 
+    .nav-container {
+        padding: 12px 20px;
+    }
+
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 60px;
+        flex-direction: column;
+        background-color: var(--bg-primary);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        padding: 24px 0;
+        gap: 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .nav-item {
+        margin: 0;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 16px;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
     .header {
-        padding: 60px 0 32px;
+        padding: 100px 0 32px;
     }
 
     .profile-section {
@@ -642,8 +646,13 @@ body {
     }
 
     .theme-toggle {
-        top: 16px;
-        right: 16px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
     }
 }
 
