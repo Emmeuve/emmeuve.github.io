@@ -108,3 +108,26 @@ document.querySelectorAll('a[href^="http"]').forEach(link => {
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener noreferrer');
 });
+
+// Page transition: fade out before navigating for project links, fade in on load
+const FADE_MS = 360;
+
+window.addEventListener('load', () => {
+    // ensure body is visible after load
+    document.body.classList.remove('page-hidden');
+});
+
+document.addEventListener('click', (e) => {
+    const a = e.target.closest && e.target.closest('a.project-link');
+    if (!a) return;
+
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    e.preventDefault();
+    // start fade
+    document.body.classList.add('page-hidden');
+    setTimeout(() => {
+        window.location.href = href;
+    }, FADE_MS);
+});
