@@ -1,59 +1,51 @@
 # Portfolio Michel Valenzuela
 
-Portafolio web minimalista y profesional de Michel Valenzuela, Diseñador Gráfico especializado en branding, diseño editorial y experiencia visual.
+Portafolio web minimalista y profesional de Michel Valenzuela, Diseñador UX/UI & Estratega Visual especializado en interfaces intuitivas y soluciones centradas en el usuario.
 
 🔗 **[Ver sitio en vivo](https://emmeuve.github.io)**
 
 ## 👨‍🎨 Sobre Mí
 
-Diseñador gráfico con formación profesional y experiencia en proyectos visuales creativos, diseño de marcas, identidad corporativa y comunicación efectiva. Apasionado por desarrollar soluciones visuales que conecten con las personas y transmitan mensajes claros y memorables.
+Diseñador UX/UI con sólida base en diseño gráfico y comunicación visual. Mi enfoque es centrado en el usuario; transformo problemas complejos en interfaces digitales intuitivas y funcionales. Especializado en la creación de experiencias coherentes que alinean los objetivos del negocio con las necesidades del usuario utilizando metodologías como Design Thinking y Design Sprint.
 
 ## ✨ Características del Portafolio
 
-- 🎨 Diseño minimalista y limpio
-- 🌓 Modo oscuro/claro con persistencia
+- 🎨 Diseño minimalista inspirado en Frame & Form
+- 🌓 Modo oscuro/claro con persistencia (localStorage)
 - 📱 Completamente responsive (mobile, tablet, desktop)
+- 🎯 Navegación fija con scroll activo
+- 🖼️ Bento Grid para proyectos (estilo asimétrico)
+- 🎬 Lightbox para galerías de proyectos
+- 🎨 Ribbon animado de logos de herramientas
+- 💬 CTA (Call to Action) en sección de contacto
 - ⚡ Performance optimizado
-- ♿ Accesible
-- 🎭 Animaciones suaves
+- ♿ Accesible (ARIA labels, navegación por teclado)
 - 🚀 Deploy automático con GitHub Pages
 
 ## 🛠️ Tecnologías
 
-- HTML5
-- CSS3 (Variables CSS, Grid, Flexbox)
-- JavaScript (ES6+)
-- GitHub Pages
+- HTML5 (Semántico)
+- CSS3 (Variables CSS, Grid, Flexbox, Animations)
+- JavaScript ES6+ (Vanilla)
+- GitHub Pages (Hosting)
 
 ## 📋 Secciones
 
-- **Sobre Mí** - Perfil profesional y descripción
-- **Experiencia Profesional** - Historial laboral
-- **Proyectos Destacados** - Portfolio de trabajos realizados
-- **Habilidades** - Herramientas, especialidades y metodologías
+### Página Principal (index.html)
+- **Header** - Foto de perfil, nombre, título y bio
+- **Mi Enfoque** - Descripción del enfoque profesional y metodologías
+- **Experiencia Profesional** - Timeline con historial laboral
+- **Casos de Estudio** - Bento Grid con proyectos destacados
+- **Habilidades** - Herramientas, especialidades y metodologías con ribbon animado
 - **Formación** - Educación y certificaciones
-- **Contacto** - Redes sociales y formas de contacto
+- **Contacto** - CTA principal + información de contacto
 
-## 🎯 Especialidades
-
-### Herramientas
-- Adobe Illustrator
-- Adobe Photoshop
-- Adobe InDesign
-- Figma
-- Canva
-
-### Áreas de Expertise
-- Branding e Identidad Visual
-- Diseño Editorial
-- Tipografía
-- Composición Visual
-- Diseño UX/UI
-- Dirección de Arte
-
-### Metodologías
-- Design Thinking
-- Design Sprint
+### Página de Proyecto (project.html)
+- **Hero del proyecto** - Imagen destacada, título y rol
+- **Galería** - Grid de imágenes con lightbox
+- **Descripción** - Problema, Proceso, Solución
+- **Herramientas** - Logos de tecnologías utilizadas
+- **Navegación** - Volver al portfolio
 
 ## 🚀 Instalación Local
 
@@ -71,11 +63,74 @@ cd emmeuve.github.io
 
 ```
 emmeuve.github.io/
-├── index.html      # Estructura HTML
-├── styles.css      # Estilos y temas
-├── script.js       # Funcionalidad interactiva
-└── README.md       # Este archivo
+├── index.html              # Página principal
+├── project.html            # Template de página de proyecto
+├── styles.css              # Estilos globales
+├── script.js               # JavaScript funcionalidad
+├── README.md               # Este archivo
+└── assets/
+    └── img/
+        ├── profile.jpeg    # Foto de perfil
+        ├── projects/       # Imágenes de proyectos
+        │   ├── project-1.jpg
+        │   ├── project-2.jpg
+        │   └── ...
+        ├── png/            # Recursos PNG
+        └── logos/
+            └── official/   # Logos de herramientas
+                ├── photoshop.svg
+                ├── illustrator.svg
+                ├── indesign.svg
+                ├── figma.svg
+                ├── canva.svg
+                ├── vscode.svg
+                ├── html5.svg
+                ├── css3.svg
+                ├── js.svg
+                ├── rails.svg
+                ├── openai.svg
+                └── gemini.svg
 ```
+
+## 🎯 Características Destacadas
+
+### 1. **Bento Grid (Casos de Estudio)**
+Diseño inspirado en Frame & Form con grid asimétrico:
+- Proyectos grandes: 2 columnas
+- Proyectos medianos: 1 columna
+- Hover elegante con transform
+- Links directos a casos de estudio
+
+### 2. **Navegación Inteligente**
+- Navbar fijo con blur backdrop
+- Links activos según scroll
+- Menú hamburguesa responsive
+- Smooth scroll a secciones
+
+### 3. **Logo Ribbon Animado**
+- Scroll infinito automático
+- Pausa al hover
+- Logos SVG adaptativos al tema
+- 12 herramientas destacadas
+
+### 4. **CTA Optimizado**
+- Título impactante
+- Descripción del valor
+- Botón con animación al hover
+- Link directo a email
+
+### 5. **Lightbox para Galerías**
+- Modal fullscreen
+- Navegación con flechas
+- Contador de imágenes
+- Loading spinner
+- Cierre con ESC o click fuera
+
+### 6. **Modo Oscuro Persistente**
+- Toggle en navbar
+- Guardado en localStorage
+- Transiciones suaves
+- Iconos animados (sol/luna)
 
 ## 🎨 Personalización
 
@@ -86,26 +141,57 @@ Edita las variables CSS en `styles.css`:
 ```css
 :root {
     --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
     --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --border-color: #e5e7eb;
     --accent-color: #2563eb;
-    /* ... más variables */
+    --secondary-color: #1e40af;
+    --transition: all 0.3s ease;
 }
 
 [data-theme="dark"] {
     --bg-primary: #0a0a0a;
+    --bg-secondary: #151515;
     --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-tertiary: #6b7280;
+    --border-color: #262626;
     --accent-color: #3b82f6;
-    /* ... más variables */
 }
 ```
 
-### Actualizar Contenido
+### Agregar Nuevo Proyecto al Bento Grid
 
-Edita `index.html` para:
-- Actualizar proyectos
-- Agregar nueva experiencia
-- Modificar información de contacto
-- Añadir nuevas secciones
+```html
+<div class="bento-item bento-large">
+    <div class="bento-image">
+        <img src="assets/img/projects/tu-proyecto.jpg" alt="Nombre Proyecto">
+    </div>
+    <div class="bento-content">
+        <span class="bento-project-label">Project</span>
+        <h3 class="bento-project-name">Nombre del Proyecto</h3>
+        <p class="bento-tag">Categoría del Proyecto</p>
+        <p class="bento-description">
+            Descripción breve del proyecto y su impacto.
+        </p>
+        <a href="project.html" class="bento-link">Ver proyecto →</a>
+    </div>
+</div>
+```
+
+Clases disponibles:
+- `.bento-large` - 2 columnas
+- `.bento-medium` - 1 columna
+
+### Crear Nueva Página de Proyecto
+
+1. Duplica `project.html`
+2. Actualiza el contenido del header
+3. Agrega imágenes a la galería
+4. Modifica las secciones descriptivas
+5. Actualiza las herramientas utilizadas
 
 ## 🌐 Deploy
 
@@ -121,18 +207,45 @@ Los cambios se reflejarán en https://emmeuve.github.io en 1-2 minutos.
 
 ## 📱 Responsive Design
 
-El portafolio está optimizado para:
-- 📱 Mobile (< 768px)
-- 💻 Tablet (768px - 1024px)
-- 🖥️ Desktop (> 1024px)
+Breakpoints optimizados para:
+- 📱 Mobile (< 768px) - Grid 1 columna
+- 💻 Tablet (768px - 1024px) - Grid 2 columnas
+- 🖥️ Desktop (> 1024px) - Grid 3 columnas
 
 ## ⚡ Performance
 
-- Sin dependencias externas
-- CSS y JS optimizados
-- Fuentes del sistema para carga rápida
-- Animaciones eficientes
-- Código limpio y mantenible
+- ✅ Sin dependencias externas
+- ✅ CSS y JS optimizados
+- ✅ Fuentes del sistema nativa
+- ✅ Lazy loading de imágenes
+- ✅ Animaciones con CSS transforms
+- ✅ Código limpio y mantenible
+
+## 🎯 Especialidades
+
+### Herramientas
+- Adobe Suite (Photoshop, Illustrator, InDesign)
+- Figma
+- Canva
+- VS Code
+- HTML5, CSS3, JavaScript
+- Ruby on Rails
+- OpenAI / Gemini
+
+### Áreas de Expertise
+- **Diseño UX/UI**
+- **Arquitectura de la Información**
+- **Diseño de Interacción**
+- Prototipado
+- Usabilidad
+- Diseño Visual
+- Branding
+
+### Metodologías
+- **Design Thinking**
+- **Design Sprint**
+- Wireframing
+- Pruebas de Usabilidad
 
 ## 🔗 Enlaces
 
@@ -148,18 +261,40 @@ El portafolio está optimizado para:
 - **Ubicación:** Puente Alto, Santiago, Chile
 - **Disponibilidad:** Proyectos remotos y presenciales
 
+## 🐛 Características del Lightbox
+
+- Navegación con teclado (←, →, ESC)
+- Click fuera de la imagen para cerrar
+- Indicador de carga (spinner)
+- Contador de imágenes
+- Caption opcional
+- Animaciones suaves de entrada/salida
+- Accesible (ARIA labels)
+
+## 📝 To-Do / Mejoras Futuras
+
+- [ ] Agregar filtros por categoría en proyectos
+- [ ] Implementar animaciones Framer Motion
+- [ ] Agregar testimonios de clientes
+- [ ] Sistema de blog integrado
+- [ ] Formulario de contacto funcional
+- [ ] Animaciones de scroll (Intersection Observer)
+- [ ] Métricas con Google Analytics
+- [ ] Optimización de imágenes con WebP
+- [ ] PWA (Progressive Web App)
+
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Siéntete libre de usarlo como referencia.
+Este proyecto está bajo la Licencia MIT. Siéntete libre de usarlo como referencia o base para tu propio portafolio.
 
 ## 👤 Autor
 
 **Michel Valenzuela Castillo**
 
-Diseñador Gráfico especializado en branding, diseño editorial y experiencia visual. Apasionado por crear soluciones visuales que conecten con las personas y comuniquen de forma efectiva.
+Diseñador UX/UI & Estratega Visual enfocado en interfaces intuitivas y soluciones centradas en el usuario. Apasionado por crear experiencias digitales que conecten con las personas y comuniquen de forma efectiva.
 
 ---
 
 ⭐ Si te gustó este portafolio, dale una estrella en GitHub!
 
-Hecho con ❤️ en Santiago, Chile 🇨🇱
+Hecho con ❤️ y ☕ en Santiago, Chile 🇨🇱
