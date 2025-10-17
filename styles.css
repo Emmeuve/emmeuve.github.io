@@ -255,6 +255,41 @@ body {
     border-radius: 8px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
+
+/* Entry animation for the image: scale + fade */
+.lightbox-img {
+    opacity: 0;
+    transform: scale(0.96);
+    transition: transform 360ms cubic-bezier(.2,.8,.2,1), opacity 360ms ease;
+}
+.lightbox.active .lightbox-img {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Caption and counter */
+.lightbox-meta {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: rgba(255,255,255,0.95);
+    pointer-events: none;
+    font-size: 14px;
+}
+.lightbox-caption {
+    flex: 1;
+    text-align: left;
+    max-width: 80%;
+}
+.lightbox-counter {
+    flex: 0 0 auto;
+    opacity: 0.9;
+}
 .lightbox-close,
 .lightbox-prev,
 .lightbox-next {

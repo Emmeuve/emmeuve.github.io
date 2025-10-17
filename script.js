@@ -145,15 +145,32 @@ document.addEventListener('click', (e) => {
     let items = [];
     function collect() {
         items = Array.from(document.querySelectorAll('.project-gallery img, .bento-image img'))
-            .map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt') }));
+            .map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt'), high: img.getAttribute('data-highres') }));
     }
     collect();
 
     let index = 0;
     function openAt(i) {
         index = (i + items.length) % items.length;
-        imgEl.src = items[index].src;
-        imgEl.alt = items[index].alt || '';
+        const item = items[index];
+        imgEl.alt = item.alt || '';
+        // lazy-load high res if available
+        const high = item.high;
+        if (high) {
+            // set low-res first, then swap when loaded
+            imgEl.src = item.src || high;
+            const hi = new Image();
+            hi.src = high;
+            hi.onload = () => { imgEl.src = high; };
+        } else {
+            imgEl.src = item.src;
+        }
+
+        // update caption and counter
+        const captionEl = lightbox.querySelector('.lightbox-caption');
+        const counterEl = lightbox.querySelector('.lightbox-counter');
+        if (captionEl) captionEl.textContent = item.alt || '';
+        if (counterEl) counterEl.textContent = (index + 1) + ' / ' + items.length;
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -164,6 +181,8 @@ document.addEventListener('click', (e) => {
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        // clear image to stop media playback if any
+        imgEl.src = '';
     }
 
     btnClose.addEventListener('click', close);
