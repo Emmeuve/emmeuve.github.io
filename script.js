@@ -139,16 +139,27 @@ async function loadBehanceProjects() {
         const allProjects = [...featuredProjects];
         
         // Agregar proyectos de Behance (excluir los primeros 2 que ya están como destacados)
-        const behanceProjects = data.projects.slice(2, 10).map((project, index) => ({
-            id: project.id,
-            title: project.title,
-            tag: 'Ver en Behance',
-            description: project.description,
-            image: project.image,
-            link: project.link,
-            size: index % 3 === 0 ? 'bento-large' : 'bento-medium',
-            featured: false
-        }));
+        const behanceProjects = data.projects.slice(2, 10).map((project, index) => {
+            // Obtener imagen de mejor calidad
+            // Behance suele tener imágenes con diferentes tamaños, intentamos obtener la mejor
+            let imageUrl = project.image;
+            
+            // Si la imagen tiene parámetros de tamaño, intentamos obtener una versión más grande
+            if (imageUrl && imageUrl.includes('?')) {
+                imageUrl = imageUrl.split('?')[0]; // Quitar parámetros para obtener imagen original
+            }
+            
+            return {
+                id: project.id,
+                title: project.title,
+                tag: 'Diseño Visual', // Categoría genérica para proyectos de Behance
+                description: project.description,
+                image: imageUrl,
+                link: project.link,
+                size: index % 3 === 0 ? 'bento-large' : 'bento-medium',
+                featured: false
+            };
+        });
         
         allProjects.push(...behanceProjects);
         
@@ -180,10 +191,9 @@ function renderProjects(projects) {
                 <img src="${project.image}" 
                      alt="${project.title}" 
                      loading="lazy" 
-                     onerror="this.src='assets/img/projects/placeholder.jpg'">
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';">
             </div>
             <div class="bento-content">
-                <span class="bento-project-label">Project</span>
                 <h3 class="bento-project-name">${project.title}</h3>
                 <p class="bento-tag">${project.tag}</p>
                 ${project.description ? `<p class="bento-description">${project.description}</p>` : ''}
