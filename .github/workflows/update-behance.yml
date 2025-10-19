@@ -1,0 +1,154 @@
+name: Update Behance Projects
+
+on:
+  schedule:
+    # Ejecutar todos los días a las 6 AM UTC (3 AM Chile)
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Permitir ejecución manual desde GitHub
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/update-behance.yml'
+
+jobs:
+  update-behance:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: 📦 Install dependencies
+        run: |
+          npm init -y
+          npm install xml2js node-fetch@2
+      
+      - name: 🎨 Fetch Behance Projects
+        run: |
+          node << 'EOF'
+          const fetch = require('node-fetch');
+          const xml2js = require('xml2js');
+          const fs = require('fs');
+          const path = require('path');
+          
+          const username = 'Emmeuve'; // Tu username de Behance
+          const maxProjects = 12;
+          
+          (async () => {
+            try {
+              console.log('🔍 Fetching Behance RSS feed...');
+              
+              const response = await fetch(
+                `https://www.behance.net/feeds/user?username=${username}`,
+                {
+                  headers: {
+                    'User-Agent': 'Mozilla/5.0 (compatible; BehanceBot/1.0)'
+                  }
+                }
+              );
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const xmlData = await response.text();
+              console.log('✅ RSS feed fetched successfully');
+              
+              const parser = new xml2js.Parser();
+              const result = await parser.parseStringPromise(xmlData);
+              
+              if (!result.rss || !result.rss.channel || !result.rss.channel[0].item) {
+                throw new Error('Invalid RSS structure');
+              }
+              
+              const items = result.rss.channel[0].item;
+              console.log(`📊 Found ${items.length} projects`);
+              
+              const projects = items.slice(0, maxProjects).map((item, index) => {
+                const content = item.description ? item.description[0] : '';
+                const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                
+                // Limpiar descripción de HTML
+                const cleanDesc = content
+                  .replace(/<[^>]*>/g, '')
+                  .replace(/&nbsp;/g, ' ')
+                  .replace(/&amp;/g, '&')
+                  .replace(/&quot;/g, '"')
+                  .trim()
+                  .substring(0, 150);
+                
+                return {
+                  id: `behance-project-${index + 1}`,
+                  title: item.title ? item.title[0] : 'Untitled Project',
+                  link: item.link ? item.link[0] : '',
+                  description: cleanDesc || 'Ver proyecto en Behance',
+                  image: imgMatch ? imgMatch[1] : '',
+                  pubDate: item.pubDate ? item.pubDate[0] : new Date().toISOString(),
+                  source: 'behance'
+                };
+              });
+              
+              const data = {
+                lastUpdate: new Date().toISOString(),
+                username: username,
+                totalProjects: projects.length,
+                projects: projects
+              };
+              
+              // Asegurar que el directorio existe
+              const dataDir = path.join(process.cwd(), 'assets', 'data');
+              if (!fs.existsSync(dataDir)) {
+                fs.mkdirSync(dataDir, { recursive: true });
+              }
+              
+              const filePath = path.join(dataDir, 'behance-projects.json');
+              fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+              
+              console.log('✅ Projects saved to:', filePath);
+              console.log(`📁 Total projects saved: ${projects.length}`);
+              console.log('🎉 Update completed successfully!');
+              
+            } catch (error) {
+              console.error('❌ Error:', error.message);
+              console.error('Stack:', error.stack);
+              process.exit(1);
+            }
+          })();
+          EOF
+      
+      - name: 📤 Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add assets/data/behance-projects.json
+          
+          # Solo hacer commit si hay cambios
+          if git diff --staged --quiet; then
+            echo "ℹ️ No changes to commit"
+          else
+            git commit -m "🤖 Update Behance projects [automated]"
+            git push
+            echo "✅ Changes pushed successfully"
+          fi
+      
+      - name: 📊 Summary
+        if: always()
+        run: |
+          echo "### 🎨 Behance Projects Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Username:** Emmeuve" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f assets/data/behance-projects.json ]; then
+            PROJECTS_COUNT=$(jq '.totalProjects' assets/data/behance-projects.json 2>/dev/null || echo "0")
+            echo "- **Projects Found:** $PROJECTS_COUNT" >> $GITHUB_STEP_SUMMARY
+          fi
