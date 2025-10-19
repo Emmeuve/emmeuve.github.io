@@ -1,6 +1,88 @@
 {
-  "lastUpdate": "2025-01-01T00:00:00.000Z",
+  "lastUpdate": "2025-10-19T13:46:23.709Z",
   "username": "Emmeuve",
-  "totalProjects": 0,
-  "projects": []
+  "totalProjects": 9,
+  "projects": [
+    {
+      "id": "behance-project-1",
+      "title": "Rediseño Pagina Web Romano",
+      "link": "https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Fri, 25 Oct 2024 22:06:32 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-2",
+      "title": "Rediseño de app de Starbucks",
+      "link": "https://www.behance.net/gallery/210924037/Rediseno-de-app-de-Starbucks",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Thu, 24 Oct 2024 00:24:57 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-3",
+      "title": "Creación de Marca Vefree",
+      "link": "https://www.behance.net/gallery/123514533/Creacion-de-Marca-Vefree",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Thu, 15 Jul 2021 07:20:18 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-4",
+      "title": "Rediseño de Logo de Naviera Austral",
+      "link": "https://www.behance.net/gallery/123513263/Rediseno-de-Logo-de-Naviera-Austral",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Thu, 15 Jul 2021 06:48:59 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-5",
+      "title": "Libro formativo sobre reanimación cardiopulmonar",
+      "link": "https://www.behance.net/gallery/119751093/Libro-formativo-sobre-reanimacion-cardiopulmonar",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Wed, 19 May 2021 02:57:04 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-6",
+      "title": "Rediseño de Packaging de Proteína vegetal NitroVeg",
+      "link": "https://www.behance.net/gallery/119751797/Rediseno-de-Packaging-de-Proteina-vegetal-NitroVeg",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Wed, 19 May 2021 02:54:11 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-7",
+      "title": "Creación y Branding de Marca Be Brave",
+      "link": "https://www.behance.net/gallery/119755525/Creacion-y-Branding-de-Marca-Be-Brave",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Wed, 19 May 2021 02:49:26 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-8",
+      "title": "Rediseño de Imagen corporativa Fruna",
+      "link": "https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Wed, 19 May 2021 02:22:37 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-9",
+      "title": "Brandring vehicular MIM (museo interactivo mirador)",
+      "link": "https://www.behance.net/gallery/119756189/Brandring-vehicular-MIM-%28museo-interactivo-mirador%29",
+      "description": "Ver proyecto en Behance",
+      "image": "",
+      "pubDate": "Tue, 18 May 2021 22:09:27 +0000",
+      "source": "behance"
+    }
+  ]
 }
