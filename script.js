@@ -145,12 +145,20 @@ async function loadBehanceProjects() {
         // Agregar proyectos de Behance (excluir los primeros 2 que ya están como destacados)
         const behanceProjects = data.projects.slice(2, 10).map((project, index) => {
             // Obtener imagen de mejor calidad
-            // Behance suele tener imágenes con diferentes tamaños, intentamos obtener la mejor
             let imageUrl = project.image;
+            
+            // Debug: ver qué imagen viene
+            console.log(`Proyecto: ${project.title}, Imagen: ${imageUrl}`);
             
             // Si la imagen tiene parámetros de tamaño, intentamos obtener una versión más grande
             if (imageUrl && imageUrl.includes('?')) {
                 imageUrl = imageUrl.split('?')[0]; // Quitar parámetros para obtener imagen original
+            }
+            
+            // Si no hay imagen, usar placeholder
+            if (!imageUrl || imageUrl.trim() === '') {
+                imageUrl = `https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}`;
+                console.warn(`⚠️ No hay imagen para: ${project.title}, usando placeholder`);
             }
             
             return {

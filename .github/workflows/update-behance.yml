@@ -88,6 +88,8 @@ jobs:
                 const imgMatches = content.match(/<img[^>]+src="([^">]+)"/g);
                 
                 if (imgMatches && imgMatches.length > 0) {
+                  console.log(`📸 Proyecto "${item.title[0]}" tiene ${imgMatches.length} imágenes`);
+                  
                   // Extraer la primera imagen (suele ser la portada)
                   const firstImg = imgMatches[0].match(/src="([^">]+)"/);
                   if (firstImg) {
@@ -96,12 +98,17 @@ jobs:
                     // Intentar obtener versión de mayor calidad
                     // Behance usa URLs como: /url/404.jpg o /url/original.jpg
                     imageUrl = imageUrl.replace('/404/', '/original/');
+                    imageUrl = imageUrl.replace('_404.', '_original.');
                     
                     // Si tiene parámetros de tamaño, usar imagen original
                     if (imageUrl.includes('?')) {
                       imageUrl = imageUrl.split('?')[0];
                     }
+                    
+                    console.log(`  ✅ Imagen encontrada: ${imageUrl.substring(0, 80)}...`);
                   }
+                } else {
+                  console.warn(`  ⚠️ No se encontró imagen para "${item.title[0]}"`);
                 }
                 
                 // Limpiar descripción de HTML
@@ -131,6 +138,14 @@ jobs:
                 totalProjects: projects.length,
                 projects: projects
               };
+              
+              // Log de proyectos con y sin imágenes
+              const projectsWithImages = projects.filter(p => p.image && p.image.length > 0).length;
+              const projectsWithoutImages = projects.length - projectsWithImages;
+              
+              console.log(`\n📊 Resumen de imágenes:`);
+              console.log(`  ✅ Proyectos con imagen: ${projectsWithImages}`);
+              console.log(`  ⚠️ Proyectos sin imagen: ${projectsWithoutImages}`);
               
               // Asegurar que el directorio existe
               const dataDir = path.join(process.cwd(), 'assets', 'data');
