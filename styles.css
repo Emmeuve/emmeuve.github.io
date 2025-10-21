@@ -263,7 +263,7 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    z-index: 1000;
+    z-index: 9999;
     transition: var(--transition);
 }
 
@@ -419,7 +419,9 @@ body {
 
 /* Header */
 .header {
-    padding: 120px 0 40px;
+    padding: 140px 0 40px;
+    position: relative;
+    z-index: 1;
 }
 
 .profile-section {
@@ -802,16 +804,43 @@ body {
     height: 48px;
 }
 
-.logo-item img {
-    width: 40px;
-    height: 40px;
+.logo-item img,
+.logo-item svg {
+    max-width: 40px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
     object-fit: contain;
-    opacity: 0.7;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0.6;
+    transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
 }
 
-.logo-item img:hover {
+/* Modo claro - todos en tono gris */
+[data-theme="light"] .logo-item img,
+[data-theme="light"] .logo-item svg {
+    filter: grayscale(100%) brightness(0.5);
+}
+
+[data-theme="light"] .logo-item img:hover,
+[data-theme="light"] .logo-item svg:hover {
+    filter: grayscale(0%) brightness(1);
     opacity: 1;
+}
+
+/* Modo oscuro - todos en tono blanco/gris claro */
+[data-theme="dark"] .logo-item img,
+[data-theme="dark"] .logo-item svg {
+    filter: grayscale(100%) brightness(0) invert(1);
+}
+
+[data-theme="dark"] .logo-item img:hover,
+[data-theme="dark"] .logo-item svg:hover {
+    filter: grayscale(0%) brightness(0) invert(1);
+    opacity: 1;
+}
+
+.logo-item img:hover,
+.logo-item svg:hover {
     transform: scale(1.15);
 }
 
