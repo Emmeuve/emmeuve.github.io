@@ -343,7 +343,7 @@ Adobe Suite • Photoshop • Illustrator • InDesign • Figma • Canva • V
 - **GitHub:** [@emmeuve](https://github.com/emmeuve)
 - **Email:** michelvalecastillo@gmail.com
 - **Teléfono:** +56 9 4794 7310
-- **Ubicación:** Puente Alto, Santiago, Chile
+- **Ubicación:** Santiago, Chile
 
 ## 🐛 Troubleshooting
 
