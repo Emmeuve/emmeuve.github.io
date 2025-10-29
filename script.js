@@ -120,87 +120,70 @@ async function loadBehanceProjects() {
             featured: true
         },
         {
-            id: 'proyecto-2',
-            title: 'Branding Corporativo',
+            id: 'starbucks-app',
+            title: 'Rediseño App Starbucks',
+            tag: 'Mobile App Design',
+            description: 'Rediseño de aplicación móvil enfocado en mejorar la experiencia de pedido y programa de recompensas.',
+            image: 'assets/img/projects/Starbuck.jpg',
+            link: 'https://www.behance.net/gallery/210924037/Rediseno-de-app-de-Starbucks',
+            size: 'bento-medium',
+            featured: true
+        },
+        {
+            id: 'vefree-brand',
+            title: 'Branding Vefree',
             tag: 'Brand Identity',
-            description: 'Desarrollo de identidad visual completa para empresa de servicios.',
-            image: 'assets/img/projects/project-2.jpg',
-            link: 'project.html?id=proyecto-2',
+            description: 'Desarrollo completo de identidad visual para marca de productos veganos.',
+            image: 'assets/img/projects/Vefree.jpg',
+            link: 'https://www.behance.net/gallery/123514533/Creacion-de-Marca-Vefree',
             size: 'bento-medium',
             featured: true
         },
         {
-            id: 'proyecto-3',
-            title: 'Diseño Editorial',
-            tag: 'Editorial Design',
-            description: 'Catálogos y presentaciones institucionales con enfoque en jerarquía visual.',
-            image: 'assets/img/projects/project-3.jpg',
-            link: 'project.html?id=proyecto-3',
-            size: 'bento-medium',
-            featured: true
-        },
-        {
-            id: 'proyecto-4',
-            title: 'App Mobile UX/UI',
-            tag: 'Mobile Design',
-            description: 'Diseño de interfaz para aplicación móvil con foco en usabilidad y accesibilidad.',
-            image: 'assets/img/projects/project-4.jpg',
-            link: 'project.html?id=proyecto-4',
+            id: 'bebrave',
+            title: 'Bebrave',
+            tag: 'UI/UX Design',
+            description: 'Diseño de interfaz y experiencia de usuario para plataforma digital.',
+            image: 'assets/img/projects/Bebrave.jpg',
+            link: 'https://www.behance.net/gallery/119755525/Creacion-y-Branding-de-Marca-Be-Brave',
             size: 'bento-large',
             featured: true
         },
         {
-            id: 'proyecto-5',
-            title: 'Dashboard Analytics',
-            tag: 'UI Design & Data Viz',
-            description: 'Sistema de visualización de datos con enfoque en claridad y toma de decisiones.',
-            image: 'assets/img/projects/project-5.jpg',
-            link: 'project.html?id=proyecto-5',
+            id: 'naviera-austral',
+            title: 'Naviera Austral',
+            tag: 'Web Design & Branding',
+            description: 'Rediseño de sitio web para empresa de transporte marítimo con enfoque en experiencia de usuario.',
+            image: 'assets/img/projects/NavieraAustral.jpg',
+            link: 'https://www.behance.net/gallery/123513263/Rediseno-de-Logo-de-Naviera-Austral',
             size: 'bento-medium',
             featured: true
         },
         {
-            id: 'proyecto-6',
-            title: 'E-commerce Platform',
-            tag: 'UX/UI Design',
-            description: 'Plataforma de comercio electrónico optimizada para conversión y experiencia de compra.',
-            image: 'assets/img/projects/project-6.jpg',
-            link: 'project.html?id=proyecto-6',
+            id: 'fruna',
+            title: 'Fruna',
+            tag: 'Brand & Package Design',
+            description: 'Diseño de packaging y branding para marca de productos alimenticios.',
+            image: 'assets/img/projects/Fruna.jpg',
+            link: 'https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna',
             size: 'bento-medium',
             featured: true
         }
     ];
     
-    // Intentar cargar proyectos adicionales de Behance (solo como links)
+    // Mostrar solo proyectos destacados (sin proyectos adicionales de Behance por ahora)
     try {
         const response = await fetch('assets/data/behance-projects.json');
         const data = await response.json();
         
-        console.log(`✅ Proyectos de Behance cargados: ${data.totalProjects}`);
+        console.log(`✅ Proyectos de Behance disponibles: ${data.totalProjects}`);
         console.log(`📅 Última actualización: ${new Date(data.lastUpdate).toLocaleString('es-CL')}`);
         
-        // Combinar proyectos destacados con links adicionales de Behance (sin imagen)
-        const allProjects = [...featuredProjects];
-        
-        // Agregar solo 3 proyectos adicionales de Behance como "Ver más en Behance"
-        const additionalBehance = data.projects.slice(0, 3).map((project, index) => ({
-            id: project.id,
-            title: project.title,
-            tag: 'Ver en Behance →',
-            description: project.description || 'Explora este proyecto en mi perfil de Behance.',
-            image: `https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title.substring(0, 30))}`,
-            link: project.link,
-            size: 'bento-medium',
-            featured: false,
-            isBehanceLink: true
-        }));
-        
-        allProjects.push(...additionalBehance);
-        
-        renderProjects(allProjects);
+        // Por ahora, solo mostrar proyectos destacados
+        renderProjects(featuredProjects);
         
     } catch (error) {
-        console.warn('⚠️ No se pudieron cargar proyectos de Behance, mostrando solo destacados:', error);
+        console.warn('⚠️ Mostrando proyectos destacados:', error);
         renderProjects(featuredProjects);
     }
 }
