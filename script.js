@@ -107,73 +107,95 @@ async function loadBehanceProjects() {
     const bentoGrid = document.querySelector('.bento-grid');
     if (!bentoGrid) return;
     
-    // Proyectos destacados manuales (siempre se muestran primero)
+    // Proyectos destacados manuales (control total)
     const featuredProjects = [
         {
-            id: 'redo',
-            title: 'Redo',
-            tag: 'Digital Rebrand & User Experience',
-            description: 'Rediseño completo de la presencia digital con enfoque en una interfaz moderna y experiencia de usuario mejorada.',
+            id: 'romano-rediseno',
+            title: 'Rediseño Página Web Romano',
+            tag: 'Web Design & UX',
+            description: 'Rediseño completo de la presencia digital enfocado en mejorar la experiencia de usuario y conversión.',
             image: 'assets/img/projects/project-1.jpg',
-            link: 'project.html?id=redo',
+            link: 'https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano',
             size: 'bento-large',
             featured: true
         },
         {
-            id: 'titan-energy',
-            title: 'Titan Energy',
-            tag: 'Brand Identity & Motion Graphics',
-            description: 'Campaña de lanzamiento integral con motion graphics dinámicos y storytelling visual.',
+            id: 'proyecto-2',
+            title: 'Branding Corporativo',
+            tag: 'Brand Identity',
+            description: 'Desarrollo de identidad visual completa para empresa de servicios.',
             image: 'assets/img/projects/project-2.jpg',
-            link: 'project.html?id=titan-energy',
+            link: 'project.html?id=proyecto-2',
+            size: 'bento-medium',
+            featured: true
+        },
+        {
+            id: 'proyecto-3',
+            title: 'Diseño Editorial',
+            tag: 'Editorial Design',
+            description: 'Catálogos y presentaciones institucionales con enfoque en jerarquía visual.',
+            image: 'assets/img/projects/project-3.jpg',
+            link: 'project.html?id=proyecto-3',
+            size: 'bento-medium',
+            featured: true
+        },
+        {
+            id: 'proyecto-4',
+            title: 'App Mobile UX/UI',
+            tag: 'Mobile Design',
+            description: 'Diseño de interfaz para aplicación móvil con foco en usabilidad y accesibilidad.',
+            image: 'assets/img/projects/project-4.jpg',
+            link: 'project.html?id=proyecto-4',
+            size: 'bento-large',
+            featured: true
+        },
+        {
+            id: 'proyecto-5',
+            title: 'Dashboard Analytics',
+            tag: 'UI Design & Data Viz',
+            description: 'Sistema de visualización de datos con enfoque en claridad y toma de decisiones.',
+            image: 'assets/img/projects/project-5.jpg',
+            link: 'project.html?id=proyecto-5',
+            size: 'bento-medium',
+            featured: true
+        },
+        {
+            id: 'proyecto-6',
+            title: 'E-commerce Platform',
+            tag: 'UX/UI Design',
+            description: 'Plataforma de comercio electrónico optimizada para conversión y experiencia de compra.',
+            image: 'assets/img/projects/project-6.jpg',
+            link: 'project.html?id=proyecto-6',
             size: 'bento-medium',
             featured: true
         }
     ];
     
+    // Intentar cargar proyectos adicionales de Behance (solo como links)
     try {
-        // Cargar proyectos de Behance desde el JSON actualizado por GitHub Actions
         const response = await fetch('assets/data/behance-projects.json');
         const data = await response.json();
         
         console.log(`✅ Proyectos de Behance cargados: ${data.totalProjects}`);
         console.log(`📅 Última actualización: ${new Date(data.lastUpdate).toLocaleString('es-CL')}`);
         
-        // Combinar proyectos destacados con los de Behance
+        // Combinar proyectos destacados con links adicionales de Behance (sin imagen)
         const allProjects = [...featuredProjects];
         
-        // Agregar proyectos de Behance (excluir los primeros 2 que ya están como destacados)
-        const behanceProjects = data.projects.slice(2, 10).map((project, index) => {
-            // Obtener imagen de mejor calidad
-            let imageUrl = project.image;
-            
-            // Debug: ver qué imagen viene
-            console.log(`Proyecto: ${project.title}, Imagen: ${imageUrl}`);
-            
-            // Si la imagen tiene parámetros de tamaño, intentamos obtener una versión más grande
-            if (imageUrl && imageUrl.includes('?')) {
-                imageUrl = imageUrl.split('?')[0]; // Quitar parámetros para obtener imagen original
-            }
-            
-            // Si no hay imagen, usar placeholder
-            if (!imageUrl || imageUrl.trim() === '') {
-                imageUrl = `https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}`;
-                console.warn(`⚠️ No hay imagen para: ${project.title}, usando placeholder`);
-            }
-            
-            return {
-                id: project.id,
-                title: project.title,
-                tag: 'Diseño Visual', // Categoría genérica para proyectos de Behance
-                description: project.description,
-                image: imageUrl,
-                link: project.link,
-                size: index % 3 === 0 ? 'bento-large' : 'bento-medium',
-                featured: false
-            };
-        });
+        // Agregar solo 3 proyectos adicionales de Behance como "Ver más en Behance"
+        const additionalBehance = data.projects.slice(0, 3).map((project, index) => ({
+            id: project.id,
+            title: project.title,
+            tag: 'Ver en Behance →',
+            description: project.description || 'Explora este proyecto en mi perfil de Behance.',
+            image: `https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title.substring(0, 30))}`,
+            link: project.link,
+            size: 'bento-medium',
+            featured: false,
+            isBehanceLink: true
+        }));
         
-        allProjects.push(...behanceProjects);
+        allProjects.push(...additionalBehance);
         
         renderProjects(allProjects);
         
@@ -197,13 +219,19 @@ function renderProjects(projects) {
             ? '<span class="featured-badge">Destacado</span>'
             : '';
         
+        // Estilo especial para proyectos que son solo links de Behance
+        const behanceLinkStyle = project.isBehanceLink 
+            ? 'style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;"'
+            : '';
+        
         card.innerHTML = `
-            <div class="bento-image">
+            <div class="bento-image" ${behanceLinkStyle}>
                 ${featuredBadge}
                 <img src="${project.image}" 
                      alt="${project.title}" 
                      loading="lazy" 
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';">
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';"
+                     ${project.isBehanceLink ? 'style="opacity: 0.3;"' : ''}>
             </div>
             <div class="bento-content">
                 <h3 class="bento-project-name">${project.title}</h3>
@@ -211,7 +239,7 @@ function renderProjects(projects) {
                 ${project.description ? `<p class="bento-description">${project.description}</p>` : ''}
                 <a href="${project.link}" 
                    class="bento-link" 
-                   ${!project.featured ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                   ${project.isBehanceLink || !project.featured ? 'target="_blank" rel="noopener noreferrer"' : ''}>
                    Ver proyecto →
                 </a>
             </div>
