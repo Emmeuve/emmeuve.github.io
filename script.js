@@ -114,7 +114,7 @@ async function loadBehanceProjects() {
             title: 'Rediseño Página Web Romano',
             tag: 'Web Design & UX',
             description: 'Rediseño completo de la presencia digital enfocado en mejorar la experiencia de usuario y conversión.',
-            image: 'assets/img/projects/project-1.jpg',
+            image: 'assets/img/projects/Romano.jpg',
             link: 'https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano',
             size: 'bento-large',
             featured: true
