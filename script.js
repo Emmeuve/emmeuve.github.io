@@ -230,6 +230,19 @@ function renderProjects(projects) {
         
         bentoGrid.appendChild(card);
     });
+
+    // ====== MAKE BENTO CARDS CLICKABLE ======
+    // Este código se ejecuta DESPUÉS de que las cards fueron creadas
+    document.querySelectorAll('.bento-item').forEach(card => {
+        card.style.cursor = 'pointer';
+        
+        card.addEventListener('click', () => {
+            const link = card.querySelector('.bento-link');
+            if (link) {
+                link.click();
+            }
+        });
+    });
 }
 
 // Cargar proyectos al iniciar la página
@@ -299,15 +312,3 @@ if (document.readyState === 'loading') {
 } else {
     initLogoRibbon();
 }
-
-// ====== MAKE BENTO CARDS CLICKABLE ======
-document.querySelectorAll('.bento-item').forEach(card => {
-    card.style.cursor = 'pointer';
-    
-    card.addEventListener('click', () => {
-        const link = card.querySelector('.bento-link');
-        if (link) {
-            link.click();
-        }
-    });
-});
