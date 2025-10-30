@@ -236,3 +236,78 @@ function renderProjects(projects) {
 if (window.location.pathname === '/' || window.location.pathname.includes('index.html')) {
     loadBehanceProjects();
 }
+
+// ====== INTERACTIVE LOGO RIBBON ======
+function initLogoRibbon() {
+    const logoRibbon = document.querySelector('.logo-ribbon');
+    const logoTrack = document.querySelector('.logo-track');
+
+    if (!logoRibbon || !logoTrack) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    // Pausar animación al entrar
+    logoRibbon.addEventListener('mouseenter', () => {
+        logoTrack.style.animationPlayState = 'paused';
+        logoRibbon.style.cursor = 'grab';
+    });
+
+    // Reanudar animación al salir (si no estamos arrastrando)
+    logoRibbon.addEventListener('mouseleave', () => {
+        if (!isDown) {
+            logoTrack.style.animationPlayState = 'running';
+        }
+        logoRibbon.style.cursor = 'default';
+    });
+
+    // Iniciar drag
+    logoRibbon.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - logoRibbon.offsetLeft;
+        scrollLeft = logoRibbon.scrollLeft;
+        logoRibbon.style.cursor = 'grabbing';
+    });
+
+    // Terminar drag
+    logoRibbon.addEventListener('mouseup', () => {
+        isDown = false;
+        logoRibbon.style.cursor = 'grab';
+        logoTrack.style.animationPlayState = 'running';
+    });
+
+    // Mover mientras se arrastra
+    logoRibbon.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - logoRibbon.offsetLeft;
+        const walk = (x - startX) * 1;
+        logoRibbon.scrollLeft = scrollLeft - walk;
+    });
+
+    // Prevenir drag si se sale del elemento
+    logoRibbon.addEventListener('mouseleave', () => {
+        isDown = false;
+        logoRibbon.style.cursor = 'default';
+    });
+}
+
+// Inicializar logo ribbon cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLogoRibbon);
+} else {
+    initLogoRibbon();
+}
+
+// ====== MAKE BENTO CARDS CLICKABLE ======
+document.querySelectorAll('.bento-item').forEach(card => {
+    card.style.cursor = 'pointer';
+    
+    card.addEventListener('click', () => {
+        const link = card.querySelector('.bento-link');
+        if (link) {
+            link.click();
+        }
+    });
+});

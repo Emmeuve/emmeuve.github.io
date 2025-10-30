@@ -218,6 +218,7 @@
     --border-color: #e5e7eb;
     --accent-color: #2563eb;
     --transition: all 0.3s ease;
+    --secondary-color: #1d4ed8;
 }
 
 [data-theme="dark"] {
@@ -228,6 +229,7 @@
     --text-tertiary: #6b7280;
     --border-color: #262626;
     --accent-color: #3b82f6;
+    --secondary-color: #2563eb;
 }
 
 /* Reset */
@@ -792,12 +794,32 @@ body {
 /* Logo Ribbon / Marquee */
 .logo-ribbon {
     width: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     margin-top: 24px;
     padding: 24px 0;
     background-color: var(--bg-secondary);
     border-radius: 12px;
     border: 1px solid var(--border-color);
+    scroll-behavior: smooth;
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+.logo-ribbon::-webkit-scrollbar {
+    height: 4px;
+}
+
+.logo-ribbon::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.logo-ribbon::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 2px;
+}
+
+.logo-ribbon::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
 }
 
 .logo-track {
