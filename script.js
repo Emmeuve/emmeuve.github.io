@@ -222,7 +222,8 @@ function renderProjects(projects) {
                 ${project.description ? `<p class="bento-description">${project.description}</p>` : ''}
                 <a href="${project.link}" 
                    class="bento-link" 
-                   ${project.isBehanceLink || !project.featured ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                   target="_blank" 
+                   rel="noopener noreferrer">
                    Ver proyecto →
                 </a>
             </div>
