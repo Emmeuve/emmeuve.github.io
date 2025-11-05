@@ -233,7 +233,6 @@ function renderProjects(projects) {
     });
 
     // ====== MAKE BENTO CARDS CLICKABLE ======
-    // Este código se ejecuta DESPUÉS de que las cards fueron creadas
     document.querySelectorAll('.bento-item').forEach(card => {
         card.style.cursor = 'pointer';
         
@@ -312,4 +311,103 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initLogoRibbon);
 } else {
     initLogoRibbon();
+}
+
+// ====== CURSOR PARTICLES EFFECT ======
+function initCursorParticles() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    let cursorX = 0;
+    let cursorY = 0;
+
+    // Redimensionar canvas cuando cambia el tamaño de la ventana
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // Capturar movimiento del mouse
+    document.addEventListener('mousemove', (e) => {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+
+        // Crear partículas cada cierto movimiento
+        if (Math.random() > 0.7) {
+            createParticle(cursorX, cursorY);
+        }
+    });
+
+    function createParticle(x, y) {
+        const particle = {
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 3 - 1,
+            size: Math.random() * 3 + 1,
+            opacity: 1,
+            life: Math.random() * 0.8 + 0.4,
+            maxLife: Math.random() * 0.8 + 0.4,
+        };
+        particles.push(particle);
+    }
+
+    function updateParticles() {
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.1; // Gravedad
+            p.life -= 0.02;
+            p.opacity = p.life / p.maxLife;
+        });
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(59, 130, 246, ${p.opacity * 0.8})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Brillo
+            ctx.fillStyle = `rgba(147, 197, 253, ${p.opacity * 0.4})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    function animate() {
+        updateParticles();
+        drawParticles();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+// Inicializar efecto de partículas cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursorParticles);
+} else {
+    initCursorParticles();
 }
