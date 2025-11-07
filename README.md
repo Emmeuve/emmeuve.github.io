@@ -21,6 +21,7 @@ Diseñador UX/UI con sólida base en diseño gráfico y comunicación visual. Mi
 🎨 Ribbon animado de logos de herramientas con interacción draggable
 💬 CTA optimizado en sección de contacto
 🖱️ Cards de proyectos completamente interactivas (clickeables en toda el área)
+✨ Efecto de partículas que sigue el cursor del usuario
 ⚡ Performance optimizado sin dependencias externas
 ♿ Accesible (ARIA labels, navegación por teclado)
 🚀 Deploy automático con GitHub Pages
@@ -36,7 +37,7 @@ Integración: Behance RSS Feed
 
 Header - Foto de perfil, nombre, título profesional
 Mi Enfoque - Descripción del enfoque UX/UI y metodologías
-Experiencia Profesional - Timeline con historial laboral
+Experiencia Profesional - Timeline con historial laboral (conciso y relevante)
 Casos de Estudio - Bento Grid con proyectos (destacados + Behance)
 Habilidades - Herramientas, especialidades y metodologías con ribbon animado
 Formación - Educación y certificaciones (Bootcamp UX/UI, Diseño Gráfico)
@@ -164,13 +165,21 @@ Draggable con mouse - Desliza los logos para explorar
 Pausa automática de animación al interactuar
 SVG logos adaptativos al tema
 Cursor feedback (grab/grabbing)
+Sin bordes y con efecto fade in/out en extremos
 5. Bento Cards Completamente Interactivas
 
 Clickeables en toda el área, no solo en el botón
 Cursor pointer en hover
-Redirección directa a proyectos Behance
+Redirección a Behance en pestaña nueva
 Animación smooth al pasar el mouse
-6. CTA Optimizado
+6. Efecto de Partículas del Cursor
+
+Partículas azules que siguen el movimiento del mouse
+Animación de fade out suave
+Efecto de gravedad realista
+Performance optimizado
+Solo en escritorio (sin afectar mobile)
+7. CTA Optimizado
 
 "¿Tienes un proyecto en mente?"
 ↓
@@ -178,7 +187,7 @@ Descripción del valor
 ↓
 Botón con animación → Email directo
 Hover color dinámico con variable CSS
-7. Lightbox para Galerías
+8. Lightbox para Galerías
 
 Modal fullscreen
 Navegación con flechas (← →)
@@ -186,7 +195,7 @@ Contador de imágenes
 Loading spinner
 Cierre con ESC o click fuera
 Navegación por teclado
-8. Modo Oscuro Persistente
+9. Modo Oscuro Persistente
 
 Toggle en navbar
 Guardado en localStorage
@@ -321,7 +330,6 @@ Behance: @Emmeuve
 LinkedIn: Michel Valenzuela
 GitHub: @emmeuve
 Email: michelvalecastillo@gmail.com
-Teléfono: +56 9 4794 7310
 Ubicación: Santiago, Chile
 🐛 Troubleshooting
 
@@ -356,6 +364,12 @@ Logo ribbon no es draggable
 Verifica que initLogoRibbon() se ejecuta
 Comprueba que .logo-ribbon tiene overflow-x: auto en CSS
 Limpia caché del navegador
+Efecto de partículas no aparece
+
+Abre DevTools → Console para verificar errores
+Verifica que initCursorParticles() se ejecuta
+Limpia caché del navegador (Ctrl+Shift+R)
+El efecto solo aparece en modo escritorio
 📝 To-Do / Roadmap
 
  Filtros por categoría en proyectos
@@ -370,6 +384,13 @@ Limpia caché del navegador
  SEO avanzado (Schema.org)
 📊 Changelog
 
+v2.2.0 (Octubre 2025)
+
+✅ Efecto de partículas que sigue el cursor
+✅ Proyectos de Behance se abren en pestaña nueva
+✅ Experiencia profesional condensada y mejorada
+✅ Logo ribbon sin bordes con fade in/out
+✅ Scrollbar oculta del logo ribbon
 v2.1.0 (Octubre 2025)
 
 ✅ Cards de proyectos completamente interactivas (clickeables en toda el área)
@@ -377,7 +398,7 @@ v2.1.0 (Octubre 2025)
 ✅ Pausa automática de animación al interactuar
 ✅ Mejora en feedback visual (cursores y transiciones)
 ✅ Variable CSS --secondary-color para hover botones
-v2.0.0 (Septiembre 2025)
+v2.0.0 (Enero 2025)
 
 ✅ Integración GitHub Actions + Behance
 ✅ Sistema de proyectos híbrido (destacados + automáticos)
@@ -386,7 +407,7 @@ v2.0.0 (Septiembre 2025)
 ✅ Mejora en calidad de imágenes
 ✅ Eliminación del label "Project"
 ✅ CTA optimizado en contacto
-v1.0.0 (Julio 2025)
+v1.0.0 (Diciembre 2024)
 
 ✅ Lanzamiento inicial
 ✅ Diseño responsive
