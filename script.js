@@ -63,7 +63,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) {
             const navbarHeight = document.querySelector('.navbar').offsetHeight;
             const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
-            const offsetPosition = targetPosition - navbarHeight - 20; // 20px extra de margen
+            const offsetPosition = targetPosition - navbarHeight - 20;
             
             window.scrollTo({
                 top: offsetPosition,
@@ -103,9 +103,14 @@ document.querySelectorAll('a[href^="http"]').forEach(link => {
 });
 
 // ====== BEHANCE PROJECTS LOADER ======
+let allProjects = [];
+
 async function loadBehanceProjects() {
-    const bentoGrid = document.querySelector('.bento-grid');
-    if (!bentoGrid) return;
+    const bentoGridInitial = document.querySelector('#bento-grid-initial');
+    const bentoGridMore = document.querySelector('#bento-grid-more');
+    const loadMoreBtn = document.querySelector('#load-more-btn');
+    
+    if (!bentoGridInitial) return;
     
     // Proyectos destacados manuales (control total)
     const featuredProjects = [
@@ -171,7 +176,8 @@ async function loadBehanceProjects() {
         }
     ];
     
-    // Mostrar solo proyectos destacados (sin proyectos adicionales de Behance por ahora)
+    allProjects = featuredProjects;
+    
     try {
         const response = await fetch('assets/data/behance-projects.json');
         const data = await response.json();
@@ -179,20 +185,35 @@ async function loadBehanceProjects() {
         console.log(`✅ Proyectos de Behance disponibles: ${data.totalProjects}`);
         console.log(`📅 Última actualización: ${new Date(data.lastUpdate).toLocaleString('es-CL')}`);
         
-        // Por ahora, solo mostrar proyectos destacados
-        renderProjects(featuredProjects);
-        
     } catch (error) {
         console.warn('⚠️ Mostrando proyectos destacados:', error);
-        renderProjects(featuredProjects);
     }
+    
+    // Mostrar primeros 3 proyectos
+    renderProjects(allProjects.slice(0, 3), bentoGridInitial);
+    
+    // Mostrar proyectos restantes si hay más de 3
+    if (allProjects.length > 3) {
+        renderProjects(allProjects.slice(3), bentoGridMore);
+        loadMoreBtn.style.display = 'block';
+    }
+    
+    // Evento del botón "Ver más"
+    loadMoreBtn.addEventListener('click', () => {
+        bentoGridMore.style.display = 'grid';
+        loadMoreBtn.style.display = 'none';
+        
+        // Scroll suave a los proyectos adicionales
+        setTimeout(() => {
+            bentoGridMore.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    });
 }
 
-function renderProjects(projects) {
-    const bentoGrid = document.querySelector('.bento-grid');
-    if (!bentoGrid) return;
+function renderProjects(projects, container) {
+    if (!container) return;
     
-    bentoGrid.innerHTML = '';
+    container.innerHTML = '';
     
     projects.forEach(project => {
         const card = document.createElement('div');
@@ -202,19 +223,14 @@ function renderProjects(projects) {
             ? '<span class="featured-badge">Destacado</span>'
             : '';
         
-        // Estilo especial para proyectos que son solo links de Behance
-        const behanceLinkStyle = project.isBehanceLink 
-            ? 'style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;"'
-            : '';
-        
         card.innerHTML = `
-            <div class="bento-image" ${behanceLinkStyle}>
+            <div class="bento-image">
                 ${featuredBadge}
                 <img src="${project.image}" 
                      alt="${project.title}" 
                      loading="lazy" 
                      onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';"
-                     ${project.isBehanceLink ? 'style="opacity: 0.3;"' : ''}>
+                     data-project-id="${project.id}">
             </div>
             <div class="bento-content">
                 <h3 class="bento-project-name">${project.title}</h3>
@@ -229,21 +245,62 @@ function renderProjects(projects) {
             </div>
         `;
         
-        bentoGrid.appendChild(card);
+        container.appendChild(card);
     });
 
     // ====== MAKE BENTO CARDS CLICKABLE ======
     document.querySelectorAll('.bento-item').forEach(card => {
         card.style.cursor = 'pointer';
         
-        card.addEventListener('click', () => {
-            const link = card.querySelector('.bento-link');
-            if (link) {
-                link.click();
+        card.addEventListener('click', (e) => {
+            // Evitar que se abra modal si hace clic en el link
+            if (e.target.closest('.bento-link')) {
+                return;
+            }
+            
+            const img = card.querySelector('img');
+            const projectId = img.getAttribute('data-project-id');
+            const project = allProjects.find(p => p.id === projectId);
+            
+            if (project) {
+                openProjectModal(project);
             }
         });
     });
 }
+
+// ====== MODAL FUNCTIONALITY ======
+function openProjectModal(project) {
+    const modal = document.getElementById('project-modal');
+    
+    document.getElementById('modal-project-image').src = project.image;
+    document.getElementById('modal-project-title').textContent = project.title;
+    document.getElementById('modal-project-tag').textContent = project.tag;
+    document.getElementById('modal-project-description').textContent = project.description;
+    document.getElementById('modal-project-link').href = project.link;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal() {
+    const modal = document.getElementById('project-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Modal close button
+document.querySelector('.modal-close').addEventListener('click', closeProjectModal);
+
+// Close modal on overlay click
+document.querySelector('.modal-overlay').addEventListener('click', closeProjectModal);
+
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeProjectModal();
+    }
+});
 
 // Cargar proyectos al iniciar la página
 if (window.location.pathname === '/' || window.location.pathname.includes('index.html')) {

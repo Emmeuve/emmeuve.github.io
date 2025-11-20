@@ -217,9 +217,9 @@ body {
     transform: rotate(0deg);
 }
 
-/* Header */
+/* Header - Compacto */
 .header {
-    padding: 160px 0 40px;
+    padding: 100px 0 24px;
     position: relative;
     z-index: 1;
 }
@@ -227,12 +227,12 @@ body {
 .profile-section {
     display: flex;
     align-items: flex-start;
-    gap: 24px;
+    gap: 16px;
 }
 
 .profile-image {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
@@ -244,29 +244,18 @@ body {
 }
 
 .profile-name {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     letter-spacing: -0.02em;
     margin-top: 0;
     line-height: 1.2;
 }
 
 .profile-title {
-    font-size: 16px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.profile-link {
     font-size: 14px;
     color: var(--text-secondary);
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.profile-link:hover {
-    color: var(--accent-color);
+    margin-bottom: 0;
 }
 
 /* Main Content */
@@ -420,6 +409,7 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
 .bento-item:hover .bento-image img {
@@ -500,6 +490,26 @@ body {
 
 .bento-link:hover {
     gap: 8px;
+}
+
+/* Load More Button */
+.load-more-button {
+    display: block;
+    margin: 48px auto 0;
+    padding: 12px 32px;
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.load-more-button:hover {
+    background-color: var(--accent-color);
+    color: white;
 }
 
 /* Responsive Bento Grid */
@@ -694,6 +704,14 @@ body {
         black 90%,
         transparent 100%
     );
+    
+    /* Ocultar scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.logo-ribbon::-webkit-scrollbar {
+    display: none;
 }
 
 .logo-track {
@@ -721,16 +739,6 @@ body {
     object-fit: contain;
     opacity: 0.6;
     transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
-}
-
-/* Ocultar scrollbar */
-.logo-ribbon::-webkit-scrollbar {
-    display: none;
-}
-
-.logo-ribbon {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
 }
 
 /* Modo claro - todos en tono gris */
@@ -774,6 +782,155 @@ body {
 /* Pause animation on hover */
 .logo-ribbon:hover .logo-track {
     animation-play-state: paused;
+}
+
+/* Modal Styles */
+.project-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--bg-primary);
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 40px;
+}
+
+.modal-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-details h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modal-tag {
+    font-size: 14px;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin: 0;
+}
+
+.modal-description {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modal-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: var(--transition);
+    width: fit-content;
+}
+
+.modal-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    z-index: 10001;
+}
+
+.modal-close:hover {
+    transform: rotate(90deg);
+    color: var(--accent-color);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Responsive Design */
@@ -823,7 +980,7 @@ body {
     }
 
     .header {
-        padding: 100px 0 32px;
+        padding: 80px 0 20px;
     }
 
     .profile-section {
@@ -833,12 +990,16 @@ body {
     }
 
     .profile-image {
-        width: 100px;
-        height: 100px;
+        width: 70px;
+        height: 70px;
     }
 
     .profile-name {
-        font-size: 28px;
+        font-size: 20px;
+    }
+
+    .profile-title {
+        font-size: 13px;
     }
 
     .timeline-date,
@@ -889,6 +1050,16 @@ body {
     .cta-button {
         width: 100%;
         justify-content: center;
+    }
+
+    .modal-inner {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .modal-details h2 {
+        font-size: 22px;
     }
 }
 
