@@ -122,7 +122,7 @@ async function loadBehanceProjects() {
             image: 'assets/img/projects/Romano.jpg',
             link: 'https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano',
             size: 'bento-large',
-            featured: true
+            featured: false
         },
         {
             id: 'starbucks-app',
@@ -132,7 +132,7 @@ async function loadBehanceProjects() {
             image: 'assets/img/projects/Starbuck.jpg',
             link: 'https://www.behance.net/gallery/210924037/Rediseno-de-app-de-Starbucks',
             size: 'bento-medium',
-            featured: true
+            featured: false
         },
         {
             id: 'vefree-brand',
@@ -142,7 +142,7 @@ async function loadBehanceProjects() {
             image: 'assets/img/projects/Vefree.jpg',
             link: 'https://www.behance.net/gallery/123514533/Creacion-de-Marca-Vefree',
             size: 'bento-medium',
-            featured: true
+            featured: false
         },
         {
             id: 'bebrave',
@@ -162,7 +162,7 @@ async function loadBehanceProjects() {
             image: 'assets/img/projects/NavieraAustral.jpg',
             link: 'https://www.behance.net/gallery/123513263/Rediseno-de-Logo-de-Naviera-Austral',
             size: 'bento-medium',
-            featured: true
+            featured: false
         },
         {
             id: 'fruna',
@@ -172,7 +172,7 @@ async function loadBehanceProjects() {
             image: 'assets/img/projects/Fruna.jpg',
             link: 'https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna',
             size: 'bento-medium',
-            featured: true
+            featured: false
         }
     ];
     
