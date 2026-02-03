@@ -1193,3 +1193,77 @@ section#proyectos .section-title {
 section:not(#proyectos) .container {
     max-width: 680px !important;
 }
+
+/* ===============================
+   EDITORIAL FULL-WIDTH BENTO GRID
+   =============================== */
+
+/* El section de proyectos rompe el container */
+#proyectos {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/* Grid base */
+#proyectos .bento-grid {
+  display: grid;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Desktop grande: editorial bento */
+@media (min-width: 1280px) {
+  #proyectos .bento-grid {
+    grid-template-columns: repeat(12, 1fr);
+    padding: 0 48px;
+  }
+
+  .bento-xl {
+    grid-column: span 8;
+    min-height: 70vh;
+  }
+
+  .bento-tall {
+    grid-column: span 4;
+    min-height: 70vh;
+  }
+
+  .bento-large {
+    grid-column: span 6;
+    min-height: 60vh;
+  }
+
+  .bento-medium {
+    grid-column: span 6;
+    min-height: 50vh;
+  }
+
+  .bento-small {
+    grid-column: span 4;
+    min-height: 45vh;
+  }
+}
+
+/* Laptop / Tablet: una pieza por fila */
+@media (max-width: 1279px) {
+  #proyectos .bento-grid {
+    grid-template-columns: 1fr;
+    padding: 0 32px;
+  }
+
+  .bento-item {
+    grid-column: span 1 !important;
+    min-height: 60vh;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  #proyectos .bento-grid {
+    padding: 0 20px;
+  }
+
+  .bento-item {
+    min-height: 45vh;
+  }
+}
