@@ -1059,7 +1059,6 @@ body {
     }
 }
 
-/* ========== FIX DEFINITIVO: GRID EDITORIAL 12 COLUMNAS ========== */
 /* Agregar esto AL FINAL del archivo styles.css */
 
 /* Reset container constraints for projects section */
@@ -1188,71 +1187,59 @@ section#proyectos .section-title {
         padding-right: 20px;
     }
 }
-
-/* Ensure all other sections remain with normal container */
-section:not(#proyectos) .container {
-    max-width: 680px !important;
-}
-
 /* ===============================
-   EDITORIAL FULL-WIDTH BENTO GRID
+   EDITORIAL BENTO GRID (ÚNICO)
    =============================== */
 
-/* El section de proyectos rompe el container */
 #proyectos {
   width: 100vw;
   margin-left: calc(50% - 50vw);
 }
 
-/* Grid base */
 #proyectos .bento-grid {
   display: grid;
+  grid-template-columns: repeat(12, 1fr);
   gap: 24px;
-  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
 }
 
-/* Desktop grande: editorial bento */
-@media (min-width: 1280px) {
-  #proyectos .bento-grid {
-    grid-template-columns: repeat(12, 1fr);
-    padding: 0 48px;
-  }
-
-  .bento-xl {
-    grid-column: span 8;
-    min-height: 70vh;
-  }
-
-  .bento-tall {
-    grid-column: span 4;
-    min-height: 70vh;
-  }
-
-  .bento-large {
-    grid-column: span 6;
-    min-height: 60vh;
-  }
-
-  .bento-medium {
-    grid-column: span 6;
-    min-height: 50vh;
-  }
-
-  .bento-small {
-    grid-column: span 4;
-    min-height: 45vh;
-  }
+/* Desktop editorial */
+.bento-xl {
+  grid-column: span 8;
+  min-height: 70vh;
 }
 
-/* Laptop / Tablet: una pieza por fila */
-@media (max-width: 1279px) {
+.bento-tall {
+  grid-column: span 4;
+  min-height: 70vh;
+}
+
+.bento-large {
+  grid-column: span 6;
+  min-height: 60vh;
+}
+
+.bento-medium {
+  grid-column: span 6;
+  min-height: 50vh;
+}
+
+.bento-small {
+  grid-column: span 4;
+  min-height: 45vh;
+}
+
+/* Tablet / laptop */
+@media (max-width: 1024px) {
   #proyectos .bento-grid {
     grid-template-columns: 1fr;
     padding: 0 32px;
   }
 
   .bento-item {
-    grid-column: span 1 !important;
+    grid-column: span 1;
     min-height: 60vh;
   }
 }
