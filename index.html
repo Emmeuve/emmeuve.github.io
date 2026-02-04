@@ -1,183 +1,329 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portafolio profesional de Michel Valenzuela - Diseñador UX/UI & Estratega Visual." />
-  <title>Michel Valenzuela - Diseñador Gráfico UX/UI</title>
-
-  <link rel="stylesheet" href="styles.css" />
-</head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio profesional de Michel Valenzuela - Diseñador UX/UI & Estratega Visual enfocado en interfaces intuitivas y soluciones centradas en el usuario.">
+    <title>Michel Valenzuela - Diseñador UX/UI</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="msvalidate.01" content="3AB98C7317B6FFD3EF816FC6AFDF713A" />
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "s4oud6nsc0");
+    </script>
+    <!-- Hotjar Tracking Code for Sitio 5126068 (falta el nombre) -->
+    <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:5126068,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    </head>
 <body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">MV</a>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#proyectos" class="nav-link">Proyectos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#enfoque" class="nav-link">Mi Enfoque</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#habilidades" class="nav-link">Habilidades</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contacto" class="nav-link">Contacto</a>
+                </li>
+            </ul>
+            <button class="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M10 1V3M10 17V19M19 10H17M3 10H1M16.364 16.364L14.95 14.95M5.05 5.05L3.636 3.636M16.364 3.636L14.95 5.05M5.05 14.95L3.636 16.364" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M18 11.34C17.29 11.45 16.56 11.51 15.82 11.51C11.28 11.51 7.6 7.83 7.6 3.29C7.6 2.55 7.66 1.82 7.77 1.11C4.45 2.21 2 5.29 2 8.99C2 13.53 5.68 17.21 10.22 17.21C13.92 17.21 17 14.76 18.11 11.44L18 11.34Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
 
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="#" class="nav-logo">MV</a>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="profile-section">
+                    <img src="assets/img/profile.jpeg" alt="Michel Valenzuela" class="profile-image">
+                    <div class="profile-info">
+                        <h1 class="profile-name">Michel Valenzuela</h1>
+                        <p class="profile-title">Diseñador UX/UI & Estratega Visual | Enfocado en soluciones centradas en el usuario.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <ul class="nav-menu">
-      <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
-      <li><a href="#enfoque" class="nav-link">Mi Enfoque</a></li>
-      <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-      <li><a href="#contacto" class="nav-link">Contacto</a></li>
-    </ul>
+    <main class="main">
+        <div class="container">
+            
+            <section id="proyectos" class="section">
+                <h2 class="section-title">Proyectos</h2>
+                
+                <div class="bento-grid" id="bento-grid-initial">
+                    <!-- Las primeras cards se generarán aquí por JavaScript -->
+                </div>
 
-    <button class="theme-toggle" aria-label="Toggle dark mode"></button>
+                <div class="bento-grid" id="bento-grid-more" style="display: none;">
+                    <!-- Los proyectos adicionales se generarán aquí -->
+                </div>
 
-    <div class="hamburger">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
+                <button id="load-more-btn" class="load-more-button" style="display: none;">
+                    Ver más proyectos
+                </button>
+            </section>
+
+            <section id="enfoque" class="section">
+                <h2 class="section-title">Mi Enfoque</h2>
+                <p class="section-text">
+                    Diseñador UX/UI centrado en el usuario. Transformo problemas complejos 
+                    en interfaces intuitivas usando Design Thinking y Design Sprint.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Experiencia Profesional</h2>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Oct 2024 — Actualidad</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Diseñador Gráfico · UX/UI (Freelance)</h3>
+                        <p class="timeline-location">Santiago, Chile</p>
+                        <p class="timeline-description">
+                            Desarrollo de identidades visuales y experiencias digitales para emprendimientos y pymes. 
+                            Especializado en branding, diseño de interfaces en Figma, optimización web y colaboración con equipos multidisciplinarios.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Sept 2015 — Mar 2025</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Administrador de Sistemas / Operaciones</h3>
+                        <p class="timeline-location">TIVIT / DXC / EyC Computación</p>
+                        <p class="timeline-description">
+                            Gestión de entornos tecnológicos complejos (AS400, SAP, AWS). Esta experiencia técnica 
+                            me permite entender viabilidad, seguridad y performance en mis proyectos de diseño.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">Ene 2006 — Mar 2014</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Soporte Técnico y Atención al Cliente</h3>
+                        <p class="timeline-location">Entel / Teleperformance</p>
+                        <p class="timeline-description">
+                            Desarrollé habilidades de empatía, diagnóstico y comunicación orientada al usuario, 
+                            que hoy aplico en el diseño centrado en las personas.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="habilidades" class="section">
+                <h2 class="section-title">Habilidades</h2>
+                
+                <div class="skills-list">
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">Herramientas Principales</h3>
+                        <p class="skill-items">Suite Adobe • Photoshop • Illustrator • InDesign • Figma • VSCode • HTML • CSS • Ruby</p>
+                            
+                        <div class="logo-ribbon" aria-hidden="false">
+                            <div class="logo-track">
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/Photoshop.png" alt="Adobe Photoshop logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/illustrator.png" alt="Adobe Illustrator logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/Indesign.png" alt="Adobe InDesign logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/figma.svg" alt="Figma logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/html5.svg" alt="HTML5 logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/css.svg" alt="CSS3 logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/javascript.svg" alt="JavaScript logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/rubyonrails.svg" alt="Ruby on Rails logo">
+                                </div>
+                                <!-- Duplicados para scroll infinito -->
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/Photoshop.png" alt="Adobe Photoshop logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/illustrator.png" alt="Adobe Illustrator logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/Indesign.png" alt="Adobe InDesign logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/figma.svg" alt="Figma logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/html5.svg" alt="HTML5 logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/css.svg" alt="CSS3 logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/javascript.svg" alt="JavaScript logo">
+                                </div>
+                                <div class="logo-item">
+                                    <img src="assets/img/logos/official/rails.svg" alt="Ruby on Rails logo">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">Especialidades</h3>
+                        <p class="skill-items"><strong>Diseño UX/UI</strong> • <strong>Arquitectura de la Información</strong> • <strong>Diseño de Interacción</strong> • Prototipado • Usabilidad • Diseño Visual • Branding</p>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3 class="skill-category-title">Metodologías</h3>
+                        <p class="skill-items"><strong>Design Thinking</strong> • <strong>Design Sprint</strong> • Wireframing • Pruebas de Usabilidad</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Formación</h2>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Jun — Oct 2024</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Bootcamp Diseño UX/UI</h3>
+                        <p class="timeline-location">Talento Digital para Chile - Adalid Chile</p>
+                        <p class="timeline-description">
+                            Enfoque en diseño de interfaces y experiencia de usuario. 
+                            Herramientas: Figma, Design Thinking, Design Sprint.
+                        </p>
+                        <h3 class="timeline-title">Bootcamp Desarrollo Ruby on Rails</h3>
+                        <p class="timeline-location">Talento Digital para Chile</p>
+                        <p class="timeline-description">
+                            Enfoque en desarrollo web con Ruby on Rails.
+                            Herramientas: Ruby, Rails, PostgreSQL.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2009 — 2021</div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Diseño Gráfico Profesional</h3>
+                        <p class="timeline-location">Instituto Profesional AIEP</p>
+                        <p class="timeline-description">
+                            Formación integral en diseño gráfico, comunicación visual, tipografía, 
+                            diseño editorial y desarrollo de marca.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contacto" class="section">
+                <div class="cta-container">
+                    <h2 class="cta-title">¿Tienes un proyecto en mente?</h2>
+                    <p class="cta-description">
+                        Conversemos sobre cómo puedo ayudarte a crear experiencias digitales excepcionales 
+                        que conecten con tus usuarios y cumplan tus objetivos de negocio.
+                    </p>
+                    <a href="mailto:michelvalecastillo@gmail.com" class="cta-button">
+                        Iniciar conversación
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.16667 10H15.8333M15.8333 10L10 4.16667M15.8333 10L10 15.8333" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3 class="section-subtitle">Información de Contacto</h3>
+                
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-label">Email</span>
+                        <a href="mailto:michelvalecastillo@gmail.com" class="contact-link">michelvalecastillo@gmail.com ↗</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Behance</span>
+                        <a href="https://www.behance.net/Emmeuve" target="_blank" rel="noopener noreferrer" class="contact-link">@Emmeuve ↗</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">LinkedIn</span>
+                        <a href="https://www.linkedin.com/in/michelvalenzuelacastillo/" target="_blank" rel="noopener noreferrer" class="contact-link">Michel Valenzuela ↗</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">GitHub</span>
+                        <a href="https://github.com/emmeuve" target="_blank" rel="noopener noreferrer" class="contact-link">@emmeuve ↗</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-label">Ubicación</span>
+                        <span class="contact-text">Santiago, Chile</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Modal para proyectos -->
+    <div id="project-modal" class="project-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-inner">
+                <div class="modal-image">
+                    <img id="modal-project-image" src="" alt="">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-project-title"></h2>
+                    <p id="modal-project-tag" class="modal-tag"></p>
+                    <p id="modal-project-description" class="modal-description"></p>
+                    <a id="modal-project-link" href="#" class="modal-button" target="_blank" rel="noopener noreferrer">
+                        Ver proyecto →
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</nav>
 
-<header class="header">
-  <div class="container">
-    <div class="profile-section">
-      <img src="assets/img/profile.jpeg" alt="Michel Valenzuela" class="profile-image" />
-      <div class="profile-info">
-        <h1 class="profile-name">Michel Valenzuela</h1>
-        <p class="profile-title">
-          Diseñador UX/UI & Estratega Visual · Enfocado en soluciones centradas en el usuario
-        </p>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main class="main">
-  <div class="container">
-
-    <!-- PROYECTOS -->
-    <section id="proyectos" class="section">
-      <h2 class="section-title">Proyectos</h2>
-
-      <div class="bento-grid" id="bento-grid-initial"></div>
-      <div class="bento-grid" id="bento-grid-more" style="display:none;"></div>
-
-      <button id="load-more-btn" class="load-more-button" style="display:none;">
-        Ver más proyectos
-      </button>
-    </section>
-
-    <!-- ENFOQUE -->
-    <section id="enfoque" class="section">
-      <h2 class="section-title">Mi Enfoque</h2>
-      <p class="section-text">
-        Diseñador UX/UI centrado en el usuario. Transformo problemas complejos en interfaces
-        intuitivas usando Design Thinking y Design Sprint.
-      </p>
-    </section>
-
-    <!-- EXPERIENCIA -->
-    <section class="section">
-      <h2 class="section-title">Experiencia Profesional</h2>
-
-      <div class="timeline-item">
-        <div class="timeline-date">Oct 2024 — Actualidad</div>
-        <div class="timeline-content">
-          <h3 class="timeline-title">Diseñador Gráfico · UX/UI (Freelance)</h3>
-          <p class="timeline-location">Santiago, Chile</p>
-          <p class="timeline-description">
-            Desarrollo de identidades visuales y experiencias digitales para emprendimientos y pymes.
-          </p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-date">Sept 2015 — Mar 2025</div>
-        <div class="timeline-content">
-          <h3 class="timeline-title">Administrador de Sistemas / Operaciones</h3>
-          <p class="timeline-location">TIVIT / DXC / EyC Computación</p>
-          <p class="timeline-description">
-            Gestión de entornos tecnológicos complejos (AS400, SAP, AWS).
-          </p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-date">Ene 2006 — Mar 2014</div>
-        <div class="timeline-content">
-          <h3 class="timeline-title">Soporte Técnico y Atención al Cliente</h3>
-          <p class="timeline-location">Entel / Teleperformance</p>
-          <p class="timeline-description">
-            Desarrollo de habilidades de empatía y comunicación orientada al usuario.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- HABILIDADES -->
-    <section id="habilidades" class="section">
-      <h2 class="section-title">Habilidades</h2>
-
-      <div class="skills-grid">
-        <div class="skill-category">
-          <h3 class="skill-category-title">Herramientas Principales</h3>
-          <p class="skill-items">
-            Adobe Suite · Figma · HTML · CSS · JavaScript · Ruby on Rails
-          </p>
-        </div>
-
-        <div class="skill-category">
-          <h3 class="skill-category-title">Especialidades</h3>
-          <p class="skill-items">
-            <strong>UX/UI</strong> · Arquitectura de la Información · Prototipado · Branding
-          </p>
-        </div>
-
-        <div class="skill-category">
-          <h3 class="skill-category-title">Metodologías</h3>
-          <p class="skill-items">
-            <strong>Design Thinking</strong> · Design Sprint · Usabilidad
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FORMACIÓN -->
-    <section class="section">
-      <h2 class="section-title">Formación</h2>
-
-      <div class="timeline-item">
-        <div class="timeline-date">Jun — Oct 2024</div>
-        <div class="timeline-content">
-          <h3 class="timeline-title">Bootcamp Diseño UX/UI</h3>
-          <p class="timeline-location">Talento Digital para Chile</p>
-
-          <h3 class="timeline-title" style="margin-top:16px;">
-            Bootcamp Desarrollo Ruby on Rails
-          </h3>
-          <p class="timeline-location">Talento Digital para Chile</p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-date">2009 — 2021</div>
-        <div class="timeline-content">
-          <h3 class="timeline-title">Diseño Gráfico Profesional</h3>
-          <p class="timeline-location">Instituto Profesional AIEP</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACTO -->
-    <section id="contacto" class="section">
-      <div class="cta-container">
-        <h2 class="cta-title">¿Tienes un proyecto en mente?</h2>
-        <p class="cta-description">
-          Conversemos sobre cómo puedo ayudarte a crear experiencias digitales excepcionales.
-        </p>
-        <a href="mailto:michelvalecastillo@gmail.com" class="cta-button">
-          Iniciar conversación →
-        </a>
-      </div>
-    </section>
-
-  </div>
-</main>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

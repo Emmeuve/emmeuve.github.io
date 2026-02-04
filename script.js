@@ -6,23 +6,12 @@ const html = document.documentElement;
 const currentTheme = localStorage.getItem('theme') || 'light';
 html.setAttribute('data-theme', currentTheme);
 
-// Update theme icon
-function updateThemeIcon() {
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    themeToggle.innerHTML = isDark 
-        ? '<svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
-        : '<svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>';
-}
-
-updateThemeIcon();
-
 themeToggle.addEventListener('click', () => {
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
-    updateThemeIcon();
 });
 
 // Hamburger Menu
@@ -123,7 +112,7 @@ async function loadBehanceProjects() {
     
     if (!bentoGridInitial) return;
     
-    // Proyectos destacados manuales con nuevos tamaños editoriales
+    // Proyectos destacados manuales (control total)
     const featuredProjects = [
         {
             id: 'romano-rediseno',
@@ -132,8 +121,8 @@ async function loadBehanceProjects() {
             description: 'Rediseño completo de la presencia digital enfocado en mejorar la experiencia de usuario y conversión.',
             image: 'assets/img/projects/Romano.jpg',
             link: 'https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano',
-            size: 'bento-xl', // Extra Large - 8 columnas × 2 filas
-            featured: true
+            size: 'bento-large',
+            featured: false
         },
         {
             id: 'starbucks-app',
@@ -142,8 +131,8 @@ async function loadBehanceProjects() {
             description: 'Rediseño de aplicación móvil enfocado en mejorar la experiencia de pedido y programa de recompensas.',
             image: 'assets/img/projects/Starbuck.jpg',
             link: 'https://www.behance.net/gallery/210924037/Rediseno-de-app-de-Starbucks',
-            size: 'bento-tall', // Tall - 4 columnas × 2 filas
-            featured: true
+            size: 'bento-medium',
+            featured: false
         },
         {
             id: 'vefree-brand',
@@ -152,7 +141,7 @@ async function loadBehanceProjects() {
             description: 'Desarrollo completo de identidad visual para marca de productos veganos.',
             image: 'assets/img/projects/Vefree.jpg',
             link: 'https://www.behance.net/gallery/123514533/Creacion-de-Marca-Vefree',
-            size: 'bento-large', // Large - 7 columnas
+            size: 'bento-medium',
             featured: false
         },
         {
@@ -162,8 +151,8 @@ async function loadBehanceProjects() {
             description: 'Diseño de interfaz y experiencia de usuario para plataforma digital.',
             image: 'assets/img/projects/Bebrave.jpg',
             link: 'https://www.behance.net/gallery/119755525/Creacion-y-Branding-de-Marca-Be-Brave',
-            size: 'bento-medium', // Medium - 5 columnas
-            featured: false
+            size: 'bento-large',
+            featured: true
         },
         {
             id: 'naviera-austral',
@@ -172,7 +161,7 @@ async function loadBehanceProjects() {
             description: 'Rediseño de sitio web para empresa de transporte marítimo con enfoque en experiencia de usuario.',
             image: 'assets/img/projects/NavieraAustral.jpg',
             link: 'https://www.behance.net/gallery/123513263/Rediseno-de-Logo-de-Naviera-Austral',
-            size: 'bento-small', // Small - 4 columnas
+            size: 'bento-medium',
             featured: false
         },
         {
@@ -182,7 +171,7 @@ async function loadBehanceProjects() {
             description: 'Diseño de packaging y branding para marca de productos alimenticios.',
             image: 'assets/img/projects/Fruna.jpg',
             link: 'https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna',
-            size: 'bento-small', // Small - 4 columnas
+            size: 'bento-medium',
             featured: false
         }
     ];
@@ -200,13 +189,25 @@ async function loadBehanceProjects() {
         console.warn('⚠️ Mostrando proyectos destacados:', error);
     }
     
-    // Mostrar todos los proyectos en el grid inicial
-    renderProjects(allProjects, bentoGridInitial);
+    // Mostrar primeros 3 proyectos
+    renderProjects(allProjects.slice(0, 3), bentoGridInitial);
     
-    // Ocultar botón "Ver más" ya que mostramos todos los proyectos
-    if (loadMoreBtn) {
-        loadMoreBtn.style.display = 'none';
+    // Mostrar proyectos restantes si hay más de 3
+    if (allProjects.length > 3) {
+        renderProjects(allProjects.slice(3), bentoGridMore);
+        loadMoreBtn.style.display = 'block';
     }
+    
+    // Evento del botón "Ver más"
+    loadMoreBtn.addEventListener('click', () => {
+        bentoGridMore.style.display = 'grid';
+        loadMoreBtn.style.display = 'none';
+        
+        // Scroll suave a los proyectos adicionales
+        setTimeout(() => {
+            bentoGridMore.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    });
 }
 
 function renderProjects(projects, container) {
@@ -223,8 +224,8 @@ function renderProjects(projects, container) {
             : '';
         
         card.innerHTML = `
-            ${featuredBadge}
             <div class="bento-image">
+                ${featuredBadge}
                 <img src="${project.image}" 
                      alt="${project.title}" 
                      loading="lazy" 
@@ -232,102 +233,238 @@ function renderProjects(projects, container) {
                      data-project-id="${project.id}">
             </div>
             <div class="bento-content">
-                <p class="bento-tag">${project.tag}</p>
                 <h3 class="bento-project-name">${project.title}</h3>
+                <p class="bento-tag">${project.tag}</p>
                 ${project.description ? `<p class="bento-description">${project.description}</p>` : ''}
+                <a href="${project.link}" 
+                   class="bento-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                   Ver proyecto →
+                </a>
             </div>
         `;
         
         container.appendChild(card);
     });
 
-    // ====== MAKE BENTO CARDS CLICKABLE - OPEN IN NEW TAB ======
+    // ====== MAKE BENTO CARDS CLICKABLE ======
     document.querySelectorAll('.bento-item').forEach(card => {
         card.style.cursor = 'pointer';
         
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (e) => {
+            // Evitar que se abra modal si hace clic en el link
+            if (e.target.closest('.bento-link')) {
+                return;
+            }
+            
             const img = card.querySelector('img');
             const projectId = img.getAttribute('data-project-id');
             const project = allProjects.find(p => p.id === projectId);
             
-            if (project && project.link) {
-                window.open(project.link, '_blank');
+            if (project) {
+                openProjectModal(project);
             }
         });
     });
 }
 
-// ====== LOGO RIBBON DRAGGABLE ======
+// ====== MODAL FUNCTIONALITY ======
+function openProjectModal(project) {
+    const modal = document.getElementById('project-modal');
+    
+    document.getElementById('modal-project-image').src = project.image;
+    document.getElementById('modal-project-title').textContent = project.title;
+    document.getElementById('modal-project-tag').textContent = project.tag;
+    document.getElementById('modal-project-description').textContent = project.description;
+    document.getElementById('modal-project-link').href = project.link;
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal() {
+    const modal = document.getElementById('project-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Modal close button
+document.querySelector('.modal-close').addEventListener('click', closeProjectModal);
+
+// Close modal on overlay click
+document.querySelector('.modal-overlay').addEventListener('click', closeProjectModal);
+
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeProjectModal();
+    }
+});
+
+// Cargar proyectos al iniciar la página
+if (window.location.pathname === '/' || window.location.pathname.includes('index.html')) {
+    loadBehanceProjects();
+}
+
+// ====== INTERACTIVE LOGO RIBBON ======
 function initLogoRibbon() {
     const logoRibbon = document.querySelector('.logo-ribbon');
-    if (!logoRibbon) return;
+    const logoTrack = document.querySelector('.logo-track');
+
+    if (!logoRibbon || !logoTrack) return;
 
     let isDown = false;
     let startX;
     let scrollLeft;
 
+    // Pausar animación al entrar
+    logoRibbon.addEventListener('mouseenter', () => {
+        logoTrack.style.animationPlayState = 'paused';
+        logoRibbon.style.cursor = 'grab';
+    });
+
+    // Reanudar animación al salir (si no estamos arrastrando)
+    logoRibbon.addEventListener('mouseleave', () => {
+        if (!isDown) {
+            logoTrack.style.animationPlayState = 'running';
+        }
+        logoRibbon.style.cursor = 'default';
+    });
+
+    // Iniciar drag
     logoRibbon.addEventListener('mousedown', (e) => {
         isDown = true;
-        logoRibbon.classList.add('dragging');
         startX = e.pageX - logoRibbon.offsetLeft;
         scrollLeft = logoRibbon.scrollLeft;
+        logoRibbon.style.cursor = 'grabbing';
     });
 
-    logoRibbon.addEventListener('mouseleave', () => {
-        isDown = false;
-        logoRibbon.classList.remove('dragging');
-    });
-
+    // Terminar drag
     logoRibbon.addEventListener('mouseup', () => {
         isDown = false;
-        logoRibbon.classList.remove('dragging');
+        logoRibbon.style.cursor = 'grab';
+        logoTrack.style.animationPlayState = 'running';
     });
 
+    // Mover mientras se arrastra
     logoRibbon.addEventListener('mousemove', (e) => {
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - logoRibbon.offsetLeft;
-        const walk = (x - startX) * 2;
+        const walk = (x - startX) * 1;
         logoRibbon.scrollLeft = scrollLeft - walk;
     });
+
+    // Prevenir drag si se sale del elemento
+    logoRibbon.addEventListener('mouseleave', () => {
+        isDown = false;
+        logoRibbon.style.cursor = 'default';
+    });
+}
+
+// Inicializar logo ribbon cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLogoRibbon);
+} else {
+    initLogoRibbon();
 }
 
 // ====== CURSOR PARTICLES EFFECT ======
 function initCursorParticles() {
-    // Solo en dispositivos de escritorio
-    if (window.innerWidth <= 1024) return;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particle-canvas';
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9998;
+    `;
+    document.body.appendChild(canvas);
 
-    let lastTime = 0;
-    const throttleDelay = 50; // ms entre partículas
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    document.addEventListener('mousemove', (e) => {
-        const currentTime = Date.now();
-        
-        if (currentTime - lastTime < throttleDelay) return;
-        lastTime = currentTime;
+    let particles = [];
+    let cursorX = 0;
+    let cursorY = 0;
 
-        const particle = document.createElement('div');
-        particle.className = 'cursor-particle';
-        
-        const tx = (Math.random() - 0.5) * 100;
-        const ty = (Math.random() - 0.5) * 100 + 50; // Más movimiento hacia abajo
-        
-        particle.style.left = e.clientX + 'px';
-        particle.style.top = e.clientY + 'px';
-        particle.style.setProperty('--tx', tx + 'px');
-        particle.style.setProperty('--ty', ty + 'px');
-        
-        document.body.appendChild(particle);
-        
-        setTimeout(() => {
-            particle.remove();
-        }, 1000);
+    // Redimensionar canvas cuando cambia el tamaño de la ventana
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     });
+
+    // Capturar movimiento del mouse
+    document.addEventListener('mousemove', (e) => {
+        cursorX = e.clientX;
+        cursorY = e.clientY;
+
+        // Crear partículas cada cierto movimiento
+        if (Math.random() > 0.7) {
+            createParticle(cursorX, cursorY);
+        }
+    });
+
+    function createParticle(x, y) {
+        const particle = {
+            x: x,
+            y: y,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 3 - 1,
+            size: Math.random() * 3 + 1,
+            opacity: 1,
+            life: Math.random() * 0.8 + 0.4,
+            maxLife: Math.random() * 0.8 + 0.4,
+        };
+        particles.push(particle);
+    }
+
+    function updateParticles() {
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.1; // Gravedad
+            p.life -= 0.02;
+            p.opacity = p.life / p.maxLife;
+        });
+    }
+
+    function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(59, 130, 246, ${p.opacity * 0.8})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Brillo
+            ctx.fillStyle = `rgba(147, 197, 253, ${p.opacity * 0.4})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    function animate() {
+        updateParticles();
+        drawParticles();
+        requestAnimationFrame(animate);
+    }
+
+    animate();
 }
 
-// ====== INITIALIZE ======
-document.addEventListener('DOMContentLoaded', () => {
-    loadBehanceProjects();
-    initLogoRibbon();
+// Inicializar efecto de partículas cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCursorParticles);
+} else {
     initCursorParticles();
-});
+}
