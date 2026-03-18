@@ -22,15 +22,15 @@ jobs:
     
     steps:
       - name: 📥 Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
       
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
       
       - name: 📦 Install dependencies
         run: |
@@ -45,8 +45,43 @@ jobs:
           const fs = require('fs');
           const path = require('path');
           
-          const username = 'Emmeuve'; // Tu username de Behance
+          const username = 'Emmeuve';
           const maxProjects = 12;
+
+          // Espera entre requests para no hacer spam
+          const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+          // Obtener og:image de la página del proyecto en Behance
+          async function fetchProjectImage(projectUrl) {
+            try {
+              const res = await fetch(projectUrl, {
+                headers: {
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                  'Accept-Language': 'es-CL,es;q=0.9,en;q=0.8'
+                },
+                timeout: 10000
+              });
+
+              if (!res.ok) return '';
+
+              const html = await res.text();
+
+              // Buscar og:image (imagen principal del proyecto)
+              const ogMatch = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+                           || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+
+              if (ogMatch && ogMatch[1]) {
+                console.log(`  ✅ og:image encontrada`);
+                return ogMatch[1];
+              }
+
+              return '';
+            } catch (err) {
+              console.warn(`  ⚠️ No se pudo obtener imagen: ${err.message}`);
+              return '';
+            }
+          }
           
           (async () => {
             try {
@@ -78,39 +113,38 @@ jobs:
               const items = result.rss.channel[0].item;
               console.log(`📊 Found ${items.length} projects`);
               
-              const projects = items.slice(0, maxProjects).map((item, index) => {
+              const projects = [];
+
+              for (let index = 0; index < Math.min(items.length, maxProjects); index++) {
+                const item = items[index];
                 const content = item.description ? item.description[0] : '';
-                
-                // Extraer imagen - buscar la de mejor calidad
+                const projectUrl = item.link ? item.link[0] : '';
+                const title = item.title ? item.title[0] : 'Untitled Project';
+
+                console.log(`\n🖼️ [${index + 1}/${Math.min(items.length, maxProjects)}] "${title}"`);
+
+                // Intentar obtener imagen desde el contenido del RSS primero
                 let imageUrl = '';
-                
-                // Buscar todas las imágenes en el contenido
                 const imgMatches = content.match(/<img[^>]+src="([^">]+)"/g);
-                
+
                 if (imgMatches && imgMatches.length > 0) {
-                  console.log(`📸 Proyecto "${item.title[0]}" tiene ${imgMatches.length} imágenes`);
-                  
-                  // Extraer la primera imagen (suele ser la portada)
                   const firstImg = imgMatches[0].match(/src="([^">]+)"/);
                   if (firstImg) {
-                    imageUrl = firstImg[1];
-                    
-                    // Intentar obtener versión de mayor calidad
-                    // Behance usa URLs como: /url/404.jpg o /url/original.jpg
-                    imageUrl = imageUrl.replace('/404/', '/original/');
-                    imageUrl = imageUrl.replace('_404.', '_original.');
-                    
-                    // Si tiene parámetros de tamaño, usar imagen original
-                    if (imageUrl.includes('?')) {
-                      imageUrl = imageUrl.split('?')[0];
-                    }
-                    
-                    console.log(`  ✅ Imagen encontrada: ${imageUrl.substring(0, 80)}...`);
+                    imageUrl = firstImg[1]
+                      .replace('/404/', '/original/')
+                      .replace('_404.', '_original.')
+                      .split('?')[0];
+                    console.log(`  ✅ Imagen desde RSS`);
                   }
-                } else {
-                  console.warn(`  ⚠️ No se encontró imagen para "${item.title[0]}"`);
                 }
-                
+
+                // Si no hay imagen en el RSS, hacer fetch de la página para obtener og:image
+                if (!imageUrl && projectUrl) {
+                  console.log(`  🔎 Buscando og:image en página del proyecto...`);
+                  imageUrl = await fetchProjectImage(projectUrl);
+                  await sleep(800); // Pausa para no ser bloqueado
+                }
+
                 // Limpiar descripción de HTML
                 const cleanDesc = content
                   .replace(/<[^>]*>/g, '')
@@ -121,16 +155,16 @@ jobs:
                   .trim()
                   .substring(0, 150);
                 
-                return {
+                projects.push({
                   id: `behance-project-${index + 1}`,
-                  title: item.title ? item.title[0] : 'Untitled Project',
-                  link: item.link ? item.link[0] : '',
+                  title,
+                  link: projectUrl,
                   description: cleanDesc || 'Ver proyecto en Behance',
                   image: imageUrl,
                   pubDate: item.pubDate ? item.pubDate[0] : new Date().toISOString(),
                   source: 'behance'
-                };
-              });
+                });
+              }
               
               const data = {
                 lastUpdate: new Date().toISOString(),
@@ -139,15 +173,13 @@ jobs:
                 projects: projects
               };
               
-              // Log de proyectos con y sin imágenes
-              const projectsWithImages = projects.filter(p => p.image && p.image.length > 0).length;
-              const projectsWithoutImages = projects.length - projectsWithImages;
+              // Resumen
+              const withImages = projects.filter(p => p.image).length;
+              console.log(`\n📊 Resumen:`);
+              console.log(`  ✅ Proyectos con imagen: ${withImages}`);
+              console.log(`  ⚠️ Proyectos sin imagen: ${projects.length - withImages}`);
               
-              console.log(`\n📊 Resumen de imágenes:`);
-              console.log(`  ✅ Proyectos con imagen: ${projectsWithImages}`);
-              console.log(`  ⚠️ Proyectos sin imagen: ${projectsWithoutImages}`);
-              
-              // Asegurar que el directorio existe
+              // Guardar JSON
               const dataDir = path.join(process.cwd(), 'assets', 'data');
               if (!fs.existsSync(dataDir)) {
                 fs.mkdirSync(dataDir, { recursive: true });
@@ -156,7 +188,7 @@ jobs:
               const filePath = path.join(dataDir, 'behance-projects.json');
               fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
               
-              console.log('✅ Projects saved to:', filePath);
+              console.log('\n✅ Projects saved to:', filePath);
               console.log(`📁 Total projects saved: ${projects.length}`);
               console.log('🎉 Update completed successfully!');
               
@@ -173,19 +205,15 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Agregar archivo
           git add assets/data/behance-projects.json
           
-          # Verificar si hay cambios
           if git diff --staged --quiet; then
             echo "ℹ️ No changes to commit"
             exit 0
           fi
           
-          # Hacer commit
           git commit -m "🤖 Update Behance projects [automated]"
           
-          # Intentar push con retry
           max_attempts=3
           attempt=1
           
