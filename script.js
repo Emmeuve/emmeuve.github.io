@@ -179,14 +179,36 @@ async function loadBehanceProjects() {
     allProjects = featuredProjects;
     
     try {
-        const response = await fetch('assets/data/behance-projects.json');
+        // ✅ FIX: ?v=Date.now() evita caché del navegador
+        const response = await fetch('assets/data/behance-projects.json?v=' + Date.now());
         const data = await response.json();
         
         console.log(`✅ Proyectos de Behance disponibles: ${data.totalProjects}`);
         console.log(`📅 Última actualización: ${new Date(data.lastUpdate).toLocaleString('es-CL')}`);
-        
+
+        // ✅ FIX: Links de proyectos manuales para no duplicar
+        const featuredLinks = featuredProjects.map(p => p.link);
+
+        // ✅ FIX: Convertir proyectos del JSON al formato de la grilla y agregarlos
+        const behanceProjects = data.projects
+            .filter(p => !featuredLinks.includes(p.link))
+            .map((p, i) => ({
+                id: p.id,
+                title: p.title,
+                tag: 'Behance Project',
+                description: p.description || 'Ver proyecto en Behance',
+                image: p.image || `https://placehold.co/800x600/667eea/ffffff?text=${encodeURIComponent(p.title)}`,
+                link: p.link,
+                size: i % 3 === 0 ? 'bento-large' : 'bento-medium',
+                featured: false,
+                source: 'behance'
+            }));
+
+        // ✅ FIX: Combinar proyectos manuales + Behance
+        allProjects = [...featuredProjects, ...behanceProjects];
+
     } catch (error) {
-        console.warn('⚠️ Mostrando proyectos destacados:', error);
+        console.warn('⚠️ Mostrando solo proyectos destacados:', error);
     }
     
     // Mostrar primeros 3 proyectos
@@ -229,7 +251,7 @@ function renderProjects(projects, container) {
                 <img src="${project.image}" 
                      alt="${project.title}" 
                      loading="lazy" 
-                     onerror="this.onerror=null; this.src='https://via.placeholder.com/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';"
+                     onerror="this.onerror=null; this.src='https://placehold.co/800x600/667eea/ffffff?text=${encodeURIComponent(project.title)}';"
                      data-project-id="${project.id}">
             </div>
             <div class="bento-content">
