@@ -1,10 +1,19 @@
 {
-  "lastUpdate": "2026-02-04T06:19:26.066Z",
+  "lastUpdate": "2026-03-18T01:40:39.901Z",
   "username": "Emmeuve",
-  "totalProjects": 9,
+  "totalProjects": 10,
   "projects": [
     {
       "id": "behance-project-1",
+      "title": "Racional: Optimización del primer contacto",
+      "link": "https://www.behance.net/gallery/245981325/Racional-Optimizacion-del-primer-contacto",
+      "description": "Se identificó un punto de dolor en el ingreso a la interfaz, donde los usuarios presentaban dificultades para comprender la estructura y avanzar en la",
+      "image": "",
+      "pubDate": "Tue, 17 Mar 2026 18:37:19 +0000",
+      "source": "behance"
+    },
+    {
+      "id": "behance-project-2",
       "title": "Rediseño Pagina Web Romano",
       "link": "https://www.behance.net/gallery/211082557/Rediseno-Pagina-Web-Romano",
       "description": "Ver proyecto en Behance",
@@ -13,7 +22,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-2",
+      "id": "behance-project-3",
       "title": "Rediseño de app de Starbucks",
       "link": "https://www.behance.net/gallery/210924037/Rediseno-de-app-de-Starbucks",
       "description": "Ver proyecto en Behance",
@@ -22,7 +31,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-3",
+      "id": "behance-project-4",
       "title": "Creación de Marca Vefree",
       "link": "https://www.behance.net/gallery/123514533/Creacion-de-Marca-Vefree",
       "description": "Ver proyecto en Behance",
@@ -31,7 +40,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-4",
+      "id": "behance-project-5",
       "title": "Rediseño de Logo de Naviera Austral",
       "link": "https://www.behance.net/gallery/123513263/Rediseno-de-Logo-de-Naviera-Austral",
       "description": "Ver proyecto en Behance",
@@ -40,7 +49,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-5",
+      "id": "behance-project-6",
       "title": "Libro formativo sobre reanimación cardiopulmonar",
       "link": "https://www.behance.net/gallery/119751093/Libro-formativo-sobre-reanimacion-cardiopulmonar",
       "description": "Ver proyecto en Behance",
@@ -49,7 +58,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-6",
+      "id": "behance-project-7",
       "title": "Rediseño de Packaging de Proteína vegetal NitroVeg",
       "link": "https://www.behance.net/gallery/119751797/Rediseno-de-Packaging-de-Proteina-vegetal-NitroVeg",
       "description": "Ver proyecto en Behance",
@@ -58,7 +67,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-7",
+      "id": "behance-project-8",
       "title": "Creación y Branding de Marca Be Brave",
       "link": "https://www.behance.net/gallery/119755525/Creacion-y-Branding-de-Marca-Be-Brave",
       "description": "Ver proyecto en Behance",
@@ -67,7 +76,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-8",
+      "id": "behance-project-9",
       "title": "Rediseño de Imagen corporativa Fruna",
       "link": "https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna",
       "description": "Ver proyecto en Behance",
@@ -76,7 +85,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-9",
+      "id": "behance-project-10",
       "title": "Brandring vehicular MIM (museo interactivo mirador)",
       "link": "https://www.behance.net/gallery/119756189/Brandring-vehicular-MIM-%28museo-interactivo-mirador%29",
       "description": "Ver proyecto en Behance",
