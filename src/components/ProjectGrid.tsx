@@ -89,7 +89,7 @@ const ProjectGrid = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch("/data/behance-projects.json")
+    fetch(`${import.meta.env.BASE_URL}data/behance-projects.json`)
       .then((res) => {
         if (!res.ok) throw new Error("not found");
         return res.json();
