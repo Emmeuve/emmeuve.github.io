@@ -196,13 +196,14 @@ const Header = () => {
             transition={{ delay: 1.1, duration: 0.6 }}
           >
             {[
-              { href: "#proyectos", label: "proyectos", cmd: "cd" },
-              { href: "#sobre-mi", label: "sobre_mi", cmd: "cat" },
-              { href: "#contacto", label: "contacto", cmd: "mail" },
+              { id: "proyectos", label: "proyectos", cmd: "cd" },
+              { id: "sobre-mi", label: "sobre_mi", cmd: "cat" },
+              { id: "contacto", label: "contacto", cmd: "mail" },
             ].map((link) => (
               <a
-                key={link.href}
-                href={link.href}
+                key={link.id}
+                href="#"
+                onClick={(e) => { e.preventDefault(); document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" }); }}
                 className="text-sm hover:text-primary-foreground/100 text-primary-foreground/70 transition-all duration-300 relative group flex items-center gap-1"
               >
                 <span className="text-primary-foreground/40 group-hover:text-primary-foreground/60">
