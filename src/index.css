@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* Minimal Editorial Design System - Inspired by aino.agency */
+
+@layer base {
+  :root {
+    /* Core palette: Cream, Black, White */
+    --background: 40 20% 98%;
+    --foreground: 0 0% 4%;
+
+    --card: 40 15% 96%;
+    --card-foreground: 0 0% 4%;
+
+    --popover: 40 20% 98%;
+    --popover-foreground: 0 0% 4%;
+
+    --primary: 0 0% 4%;
+    --primary-foreground: 40 20% 98%;
+
+    --secondary: 40 10% 94%;
+    --secondary-foreground: 0 0% 4%;
+
+    --muted: 40 10% 92%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 40 15% 90%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 40 10% 88%;
+    --input: 40 10% 88%;
+    --ring: 0 0% 4%;
+
+    --radius: 0px;
+
+    /* Custom tokens */
+    --cream: 40 20% 96%;
+    --cream-dark: 40 15% 92%;
+    --charcoal: 0 0% 15%;
+    
+    /* Typography */
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Space Grotesk', sans-serif;
+
+    /* Transitions */
+    --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Sidebar (keeping for compatibility) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 40 20% 98%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 40 20% 98%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 40 20% 98%;
+
+    --primary: 40 20% 98%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 40 20% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 40 10% 60%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 40 20% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 40 20% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 40 20% 80%;
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .text-display {
+    font-family: var(--font-display);
+    @apply text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none;
+  }
+
+  .text-title {
+    font-family: var(--font-display);
+    @apply text-3xl md:text-4xl font-semibold tracking-tight;
+  }
+
+  .text-body {
+    font-family: var(--font-body);
+    @apply text-sm md:text-base font-light tracking-wide leading-relaxed;
+  }
+
+  .text-caption {
+    font-family: var(--font-body);
+    @apply text-xs uppercase tracking-widest font-medium;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-500 ease-out hover:-translate-y-1;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-700 ease-out hover:scale-[1.02];
+  }
+
+  .image-cover {
+    @apply w-full h-full object-cover;
+  }
+
+  .grid-editorial {
+    @apply grid gap-2 md:gap-3;
+  }
+}

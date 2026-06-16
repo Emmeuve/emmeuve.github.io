@@ -180,7 +180,7 @@ jobs:
               console.log(`  ⚠️ Proyectos sin imagen: ${projects.length - withImages}`);
               
               // Guardar JSON
-              const dataDir = path.join(process.cwd(), 'assets', 'data');
+              const dataDir = path.join(process.cwd(), 'public', 'data');
               if (!fs.existsSync(dataDir)) {
                 fs.mkdirSync(dataDir, { recursive: true });
               }
@@ -205,7 +205,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add assets/data/behance-projects.json
+          git add public/data/behance-projects.json
           
           if git diff --staged --quiet; then
             echo "ℹ️ No changes to commit"
