@@ -1,7 +1,7 @@
 {
-  "lastUpdate": "2026-07-02T07:11:14.414Z",
+  "lastUpdate": "2026-07-03T09:15:19.381Z",
   "username": "Emmeuve",
-  "totalProjects": 9,
+  "totalProjects": 8,
   "projects": [
     {
       "id": "behance-project-1",
@@ -73,15 +73,6 @@
       "description": "Ver proyecto en Behance",
       "image": "",
       "pubDate": "Wed, 19 May 2021 02:22:37 +0000",
-      "source": "behance"
-    },
-    {
-      "id": "behance-project-9",
-      "title": "Brandring vehicular MIM (museo interactivo mirador)",
-      "link": "https://www.behance.net/gallery/119756189/Brandring-vehicular-MIM-%28museo-interactivo-mirador%29",
-      "description": "Ver proyecto en Behance",
-      "image": "",
-      "pubDate": "Tue, 18 May 2021 22:09:27 +0000",
       "source": "behance"
     }
   ]
