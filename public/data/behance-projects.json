@@ -1,7 +1,7 @@
 {
-  "lastUpdate": "2026-06-15T08:05:11.954Z",
+  "lastUpdate": "2026-07-04T08:34:27.504Z",
   "username": "Emmeuve",
-  "totalProjects": 10,
+  "totalProjects": 8,
   "projects": [
     {
       "id": "behance-project-1",
@@ -50,15 +50,6 @@
     },
     {
       "id": "behance-project-6",
-      "title": "Libro formativo sobre reanimación cardiopulmonar",
-      "link": "https://www.behance.net/gallery/119751093/Libro-formativo-sobre-reanimacion-cardiopulmonar",
-      "description": "Ver proyecto en Behance",
-      "image": "",
-      "pubDate": "Wed, 19 May 2021 02:57:04 +0000",
-      "source": "behance"
-    },
-    {
-      "id": "behance-project-7",
       "title": "Rediseño de Packaging de Proteína vegetal NitroVeg",
       "link": "https://www.behance.net/gallery/119751797/Rediseno-de-Packaging-de-Proteina-vegetal-NitroVeg",
       "description": "Ver proyecto en Behance",
@@ -67,7 +58,7 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-8",
+      "id": "behance-project-7",
       "title": "Creación y Branding de Marca Be Brave",
       "link": "https://www.behance.net/gallery/119755525/Creacion-y-Branding-de-Marca-Be-Brave",
       "description": "Ver proyecto en Behance",
@@ -76,21 +67,12 @@
       "source": "behance"
     },
     {
-      "id": "behance-project-9",
+      "id": "behance-project-8",
       "title": "Rediseño de Imagen corporativa Fruna",
       "link": "https://www.behance.net/gallery/119756627/Rediseno-de-Imagen-corporativa-Fruna",
       "description": "Ver proyecto en Behance",
       "image": "",
       "pubDate": "Wed, 19 May 2021 02:22:37 +0000",
-      "source": "behance"
-    },
-    {
-      "id": "behance-project-10",
-      "title": "Brandring vehicular MIM (museo interactivo mirador)",
-      "link": "https://www.behance.net/gallery/119756189/Brandring-vehicular-MIM-%28museo-interactivo-mirador%29",
-      "description": "Ver proyecto en Behance",
-      "image": "",
-      "pubDate": "Tue, 18 May 2021 22:09:27 +0000",
       "source": "behance"
     }
   ]
