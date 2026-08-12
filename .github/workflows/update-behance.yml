@@ -17,30 +17,55 @@ permissions:
   contents: write
   actions: read
 
+# Evita que dos ejecuciones intenten modificar main al mismo tiempo
+concurrency:
+  group: update-behance
+  cancel-in-progress: false
+
 jobs:
   update-behance:
     runs-on: ubuntu-latest
 
     steps:
+
+      # ================================================================
+      # CHECKOUT
+      # ================================================================
+
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
+          fetch-depth: 0
+
+      # ================================================================
+      # NODE
+      # ================================================================
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # ================================================================
+      # DEPENDENCIES
+      # ================================================================
+
       - name: 📦 Install dependencies
         run: |
           npm init -y
           npm install xml2js node-fetch@2
 
+      # ================================================================
+      # FETCH BEHANCE PROJECTS
+      # ================================================================
+
       - name: 🎨 Fetch Behance Projects
         run: |
+
           node << 'EOF'
+
           const fetch = require('node-fetch');
           const xml2js = require('xml2js');
           const fs = require('fs');
@@ -50,295 +75,456 @@ jobs:
           const maxProjects = 12;
 
           // Espera entre requests para evitar bloqueos
-          const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+          const sleep = (ms) =>
+            new Promise(resolve => setTimeout(resolve, ms));
 
-          /**
-           * Obtiene la imagen principal de un proyecto de Behance.
-           *
-           * Orden de búsqueda:
-           * 1. og:image
-           * 2. twitter:image
-           * 3. URLs de imágenes encontradas dentro del HTML
-           */
+
+          // ============================================================
+          // OBTENER IMAGEN DE BEHANCE
+          // ============================================================
+
           async function fetchProjectImage(projectUrl) {
+
             try {
+
               console.log(`  🔎 Consultando Behance...`);
 
               const res = await fetch(projectUrl, {
+
                 headers: {
+
                   'User-Agent':
                     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36',
+
                   'Accept':
                     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                  'Accept-Language': 'es-CL,es;q=0.9,en;q=0.8',
-                  'Cache-Control': 'no-cache'
+
+                  'Accept-Language':
+                    'es-CL,es;q=0.9,en;q=0.8',
+
+                  'Cache-Control':
+                    'no-cache'
+
                 },
+
                 timeout: 15000
+
               });
 
+
               if (!res.ok) {
-                console.warn(`  ⚠️ Behance respondió HTTP ${res.status}`);
+
+                console.warn(
+                  `  ⚠️ Behance respondió HTTP ${res.status}`
+                );
+
                 return '';
+
               }
+
 
               const html = await res.text();
 
-              // -------------------------------------------------------
-              // 1. og:image
-              // -------------------------------------------------------
+
+              // ========================================================
+              // 1. OG IMAGE
+              // ========================================================
 
               const ogMatch =
+
                 html.match(
                   /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i
-                ) ||
+                )
+
+                ||
+
                 html.match(
                   /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i
                 );
 
-              if (ogMatch && ogMatch[1]) {
-                const imageUrl = ogMatch[1]
-                  .replace(/&amp;/g, '&')
-                  .trim();
 
-                console.log(`  ✅ Imagen encontrada mediante og:image`);
-                console.log(`  🖼️ ${imageUrl}`);
+              if (ogMatch && ogMatch[1]) {
+
+                const imageUrl =
+                  ogMatch[1]
+                    .replace(/&amp;/g, '&')
+                    .trim();
+
+                console.log(
+                  `  ✅ Imagen encontrada mediante og:image`
+                );
+
+                console.log(
+                  `  🖼️ ${imageUrl}`
+                );
 
                 return imageUrl;
+
               }
 
-              // -------------------------------------------------------
-              // 2. twitter:image
-              // -------------------------------------------------------
+
+              // ========================================================
+              // 2. TWITTER IMAGE
+              // ========================================================
 
               const twitterMatch =
+
                 html.match(
                   /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i
-                ) ||
+                )
+
+                ||
+
                 html.match(
                   /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i
                 );
 
-              if (twitterMatch && twitterMatch[1]) {
-                const imageUrl = twitterMatch[1]
-                  .replace(/&amp;/g, '&')
-                  .trim();
 
-                console.log(`  ✅ Imagen encontrada mediante twitter:image`);
-                console.log(`  🖼️ ${imageUrl}`);
+              if (
+                twitterMatch &&
+                twitterMatch[1]
+              ) {
+
+                const imageUrl =
+                  twitterMatch[1]
+                    .replace(/&amp;/g, '&')
+                    .trim();
+
+                console.log(
+                  `  ✅ Imagen encontrada mediante twitter:image`
+                );
+
+                console.log(
+                  `  🖼️ ${imageUrl}`
+                );
 
                 return imageUrl;
+
               }
 
-              // -------------------------------------------------------
-              // 3. Buscar imágenes dentro del HTML
-              // -------------------------------------------------------
+
+              // ========================================================
+              // 3. IMÁGENES DENTRO DEL HTML
+              // ========================================================
 
               const imageMatches = [
+
                 ...html.matchAll(
                   /https?:\/\/[^"'\\\s]+(?:behance|adobe)[^"'\\\s]+\.(?:jpg|jpeg|png|webp)/gi
                 )
+
               ];
 
-              if (imageMatches.length > 0) {
-                const imageUrl = imageMatches[0][0]
-                  .replace(/\\u002F/g, '/')
-                  .replace(/\\\//g, '/')
-                  .replace(/&amp;/g, '&')
-                  .trim();
 
-                console.log(`  ✅ Imagen encontrada dentro del HTML`);
-                console.log(`  🖼️ ${imageUrl}`);
+              if (
+                imageMatches.length > 0
+              ) {
+
+                const imageUrl =
+                  imageMatches[0][0]
+
+                    .replace(
+                      /\\u002F/g,
+                      '/'
+                    )
+
+                    .replace(
+                      /\\\//g,
+                      '/'
+                    )
+
+                    .replace(
+                      /&amp;/g,
+                      '&'
+                    )
+
+                    .trim();
+
+
+                console.log(
+                  `  ✅ Imagen encontrada dentro del HTML`
+                );
+
+                console.log(
+                  `  🖼️ ${imageUrl}`
+                );
 
                 return imageUrl;
+
               }
 
-              console.warn(`  ⚠️ No se encontró ninguna imagen en Behance`);
+
+              console.warn(
+                `  ⚠️ No se encontró ninguna imagen en Behance`
+              );
+
 
               return '';
 
-            } catch (err) {
+            }
+
+            catch (err) {
+
               console.warn(
                 `  ⚠️ Error obteniendo imagen: ${err.message}`
               );
 
               return '';
+
             }
+
           }
 
-          // -----------------------------------------------------------
+
+          // ============================================================
           // PROCESO PRINCIPAL
-          // -----------------------------------------------------------
+          // ============================================================
 
           (async () => {
-            try {
-              console.log('🔍 Fetching Behance RSS feed...');
 
-              const response = await fetch(
-                `https://www.behance.net/feeds/user?username=${username}`,
-                {
-                  headers: {
-                    'User-Agent':
-                      'Mozilla/5.0 (compatible; BehanceBot/1.0)'
-                  }
-                }
+            try {
+
+              console.log(
+                '🔍 Fetching Behance RSS feed...'
               );
 
+
+              const response = await fetch(
+
+                `https://www.behance.net/feeds/user?username=${username}`,
+
+                {
+
+                  headers: {
+
+                    'User-Agent':
+                      'Mozilla/5.0 (compatible; BehanceBot/1.0)'
+
+                  }
+
+                }
+
+              );
+
+
               if (!response.ok) {
+
                 throw new Error(
                   `HTTP error! status: ${response.status}`
                 );
+
               }
 
-              const xmlData = await response.text();
 
-              console.log('✅ RSS feed fetched successfully');
+              const xmlData =
+                await response.text();
 
-              const parser = new xml2js.Parser();
+
+              console.log(
+                '✅ RSS feed fetched successfully'
+              );
+
+
+              const parser =
+                new xml2js.Parser();
+
 
               const result =
-                await parser.parseStringPromise(xmlData);
+                await parser.parseStringPromise(
+                  xmlData
+                );
+
 
               if (
                 !result.rss ||
                 !result.rss.channel ||
                 !result.rss.channel[0].item
               ) {
+
                 throw new Error(
                   'Invalid RSS structure'
                 );
+
               }
+
 
               const items =
                 result.rss.channel[0].item;
 
+
               const totalToProcess =
-                Math.min(items.length, maxProjects);
+                Math.min(
+                  items.length,
+                  maxProjects
+                );
+
 
               console.log(
                 `📊 Found ${items.length} projects`
               );
 
+
               const projects = [];
 
-              // ---------------------------------------------------------
+
+              // ========================================================
               // PROCESAR PROYECTOS
-              // ---------------------------------------------------------
+              // ========================================================
 
               for (
                 let index = 0;
                 index < totalToProcess;
                 index++
               ) {
-                const item = items[index];
+
+                const item =
+                  items[index];
+
 
                 const content =
                   item.description
                     ? item.description[0]
                     : '';
 
+
                 const projectUrl =
                   item.link
                     ? item.link[0]
                     : '';
+
 
                 const title =
                   item.title
                     ? item.title[0]
                     : 'Untitled Project';
 
+
                 console.log(
                   `\n🖼️ [${index + 1}/${totalToProcess}] "${title}"`
                 );
 
+
                 let imageUrl = '';
 
-                // -------------------------------------------------------
-                // Intentar obtener imagen desde RSS
-                // -------------------------------------------------------
+
+                // ======================================================
+                // IMAGEN DESDE RSS
+                // ======================================================
 
                 const imgMatches =
                   content.match(
                     /<img[^>]+src=["']([^"'>]+)["']/gi
                   );
 
+
                 if (
                   imgMatches &&
                   imgMatches.length > 0
                 ) {
+
                   const firstImg =
                     imgMatches[0].match(
                       /src=["']([^"'>]+)["']/i
                     );
 
-                  if (firstImg && firstImg[1]) {
+
+                  if (
+                    firstImg &&
+                    firstImg[1]
+                  ) {
+
                     imageUrl =
                       firstImg[1]
+
                         .replace(
                           '/404/',
                           '/original/'
                         )
+
                         .replace(
                           '_404.',
                           '_original.'
                         )
+
                         .split('?')[0];
+
 
                     console.log(
                       `  ✅ Imagen obtenida desde RSS`
                     );
+
                   }
+
                 }
 
-                // -------------------------------------------------------
-                // Si RSS no tiene imagen → Behance
-                // -------------------------------------------------------
+
+                // ======================================================
+                // IMAGEN DESDE PÁGINA BEHANCE
+                // ======================================================
 
                 if (
                   !imageUrl &&
                   projectUrl
                 ) {
+
                   console.log(
                     `  🔎 Buscando imagen en página del proyecto...`
                   );
+
 
                   imageUrl =
                     await fetchProjectImage(
                       projectUrl
                     );
 
+
                   await sleep(800);
+
                 }
 
-                // -------------------------------------------------------
-                // Limpiar descripción
-                // -------------------------------------------------------
+
+                // ======================================================
+                // DESCRIPCIÓN
+                // ======================================================
 
                 const cleanDesc =
                   content
+
                     .replace(
                       /<[^>]*>/g,
                       ''
                     )
+
                     .replace(
                       /&nbsp;/g,
                       ' '
                     )
+
                     .replace(
                       /&amp;/g,
                       '&'
                     )
+
                     .replace(
                       /&quot;/g,
                       '"'
                     )
+
                     .replace(
                       /&apos;/g,
                       "'"
                     )
+
                     .trim()
-                    .substring(0, 150);
+
+                    .substring(
+                      0,
+                      150
+                    );
+
 
                 projects.push({
+
                   id:
                     `behance-project-${index + 1}`,
 
@@ -361,12 +547,15 @@ jobs:
 
                   source:
                     'behance'
+
                 });
+
               }
 
-              // ---------------------------------------------------------
-              // VALIDAR RESULTADOS
-              // ---------------------------------------------------------
+
+              // ========================================================
+              // VALIDACIÓN
+              // ========================================================
 
               const withImages =
                 projects.filter(
@@ -375,13 +564,23 @@ jobs:
                     project.image.trim() !== ''
                 ).length;
 
+
               const withoutImages =
                 projects.length -
                 withImages;
 
-              console.log('\n📊 ============================');
-              console.log('📊 RESUMEN');
-              console.log('📊 ============================');
+
+              console.log(
+                '\n📊 ============================'
+              );
+
+              console.log(
+                '📊 RESUMEN'
+              );
+
+              console.log(
+                '📊 ============================'
+              );
 
               console.log(
                 `📁 Proyectos encontrados: ${projects.length}`
@@ -399,27 +598,34 @@ jobs:
                 '📊 ============================\n'
               );
 
-              // ---------------------------------------------------------
+
+              // ========================================================
               // PROTECCIÓN
               //
-              // Si Behance no entrega ninguna imagen, NO actualizamos
-              // el JSON. Así evitamos romper el portfolio.
-              // ---------------------------------------------------------
+              // Si Behance devuelve proyectos pero ninguna imagen,
+              // detenemos el workflow para NO destruir el JSON válido.
+              // ========================================================
 
               if (
                 projects.length > 0 &&
                 withImages === 0
               ) {
+
                 throw new Error(
+
                   'No se pudo obtener ninguna imagen de Behance. Se cancela la actualización para evitar publicar datos incompletos.'
+
                 );
+
               }
 
-              // ---------------------------------------------------------
-              // CREAR DATA
-              // ---------------------------------------------------------
+
+              // ========================================================
+              // DATA
+              // ========================================================
 
               const data = {
+
                 lastUpdate:
                   new Date().toISOString(),
 
@@ -429,11 +635,13 @@ jobs:
                   projects.length,
 
                 projects
+
               };
 
-              // ---------------------------------------------------------
+
+              // ========================================================
               // GUARDAR JSON
-              // ---------------------------------------------------------
+              // ========================================================
 
               const dataDir =
                 path.join(
@@ -442,16 +650,20 @@ jobs:
                   'data'
                 );
 
+
               if (
                 !fs.existsSync(dataDir)
               ) {
+
                 fs.mkdirSync(
                   dataDir,
                   {
                     recursive: true
                   }
                 );
+
               }
+
 
               const filePath =
                 path.join(
@@ -459,28 +671,40 @@ jobs:
                   'behance-projects.json'
                 );
 
+
               fs.writeFileSync(
+
                 filePath,
+
                 JSON.stringify(
                   data,
                   null,
                   2
                 )
+
               );
+
 
               console.log(
                 `\n✅ Projects saved to: ${filePath}`
               );
 
+
               console.log(
                 `📁 Total projects saved: ${projects.length}`
               );
 
+
               console.log(
                 '🎉 Update completed successfully!'
+
               );
 
-            } catch (error) {
+
+            }
+
+            catch (error) {
+
               console.error(
                 '\n❌ Error:',
                 error.message
@@ -492,70 +716,169 @@ jobs:
               );
 
               process.exit(1);
+
             }
+
           })();
 
           EOF
 
-      # ---------------------------------------------------------------
+
+      # ================================================================
       # COMMIT Y PUSH
-      # ---------------------------------------------------------------
+      # ================================================================
 
       - name: 📤 Commit and push changes
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+
+          git config --local user.email \
+            "github-actions[bot]@users.noreply.github.com"
+
+          git config --local user.name \
+            "github-actions[bot]"
+
 
           git add public/data/behance-projects.json
 
+
           if git diff --staged --quiet; then
+
             echo "ℹ️ No changes to commit"
+
             exit 0
+
           fi
 
-          git commit -m "🤖 Update Behance projects [automated]"
+
+          git commit \
+            -m "🤖 Update Behance projects [automated]"
+
+
+          # ============================================================
+          # PUSH CON REINTENTOS Y SINCRONIZACIÓN
+          # ============================================================
 
           max_attempts=3
           attempt=1
 
+
           while [ $attempt -le $max_attempts ]; do
+
+            echo ""
             echo "📤 Attempting push (attempt $attempt/$max_attempts)..."
 
+
             if git push origin main; then
+
               echo "✅ Changes pushed successfully"
+
               exit 0
+
             fi
 
-            echo "⚠️ Push failed, retrying in 5 seconds..."
 
-            sleep 5
+            echo ""
+            echo "⚠️ Push rejected."
+
+            echo "🔄 Synchronizing local main with origin/main..."
+
+
+            git fetch origin main
+
+
+            echo "🔄 Rebasing local commit onto origin/main..."
+
+
+            if git rebase origin/main; then
+
+              echo "✅ Rebase successful"
+
+            else
+
+              echo "❌ Rebase failed"
+
+              git rebase --abort || true
+
+              exit 1
+
+            fi
+
 
             attempt=$((attempt + 1))
+
+
+            if [ $attempt -le $max_attempts ]; then
+
+              echo "⏳ Retrying in 5 seconds..."
+
+              sleep 5
+
+            fi
+
           done
 
+
+          echo ""
           echo "❌ Failed to push after $max_attempts attempts"
 
           exit 1
 
-      # ---------------------------------------------------------------
+
+      # ================================================================
       # SUMMARY
-      # ---------------------------------------------------------------
+      # ================================================================
 
       - name: 📊 Summary
         if: always()
         run: |
-          echo "### 🎨 Behance Projects Update" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Username:** Emmeuve" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
 
-          if [ -f public/data/behance-projects.json ]; then
-            PROJECTS_COUNT=$(grep -o '"totalProjects":[0-9]*' public/data/behance-projects.json | grep -o '[0-9]*' || echo "0")
+          echo "### 🎨 Behance Projects Update" \
+            >> $GITHUB_STEP_SUMMARY
 
-            echo "- **Projects Found:** $PROJECTS_COUNT" >> $GITHUB_STEP_SUMMARY
 
-            IMAGES_COUNT=$(grep -o '"image":[^,]*' public/data/behance-projects.json | grep -v '""' | wc -l | tr -d ' ' || echo "0")
+          echo "" \
+            >> $GITHUB_STEP_SUMMARY
 
-            echo "- **Projects With Images:** $IMAGES_COUNT" >> $GITHUB_STEP_SUMMARY
+
+          echo "- **Username:** Emmeuve" \
+            >> $GITHUB_STEP_SUMMARY
+
+
+          echo "- **Status:** ${{ job.status }}" \
+            >> $GITHUB_STEP_SUMMARY
+
+
+          echo "- **Timestamp:** $(date -u)" \
+            >> $GITHUB_STEP_SUMMARY
+
+
+          if [
+            -f public/data/behance-projects.json
+          ]; then
+
+            PROJECTS_COUNT=$(
+              grep -o '"totalProjects":[0-9]*' \
+              public/data/behance-projects.json |
+              grep -o '[0-9]*' ||
+              echo "0"
+            )
+
+
+            echo "- **Projects Found:** $PROJECTS_COUNT" \
+              >> $GITHUB_STEP_SUMMARY
+
+
+            IMAGES_COUNT=$(
+              grep -o '"image":[^,]*' \
+              public/data/behance-projects.json |
+              grep -v '""' |
+              wc -l |
+              tr -d ' ' ||
+              echo "0"
+            )
+
+
+            echo "- **Projects With Images:** $IMAGES_COUNT" \
+              >> $GITHUB_STEP_SUMMARY
+
           fi
